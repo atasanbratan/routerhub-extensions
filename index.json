@@ -1,0 +1,46 @@
+{
+  "name": "RouterHub extensions",
+  "signingKey": "7f3b12b954803f03ab9996563f834c7ed237ad55ebe631a2cc4c26eefbef0e39",
+  "extensions": [
+    {
+      "name": "Demo (fake router)",
+      "packageName": "dev.routerhub.extension.demo",
+      "versionCode": 1,
+      "versionName": "1.0.0",
+      "apiVersion": 3,
+      "apk": "apk/dev.routerhub.extension.demo-v1.0.0.apk",
+      "size": 40034,
+      "sha256": "5e81279d66788f89dba1d6a24c1c5c078c18a5794ceaacdc19c1f922c7461e98"
+    },
+    {
+      "name": "OpenWrt (SSH)",
+      "packageName": "dev.routerhub.extension.openwrt",
+      "versionCode": 1,
+      "versionName": "1.0.0",
+      "apiVersion": 1,
+      "apk": "apk/dev.routerhub.extension.openwrt-v1.0.0.apk",
+      "size": 487228,
+      "sha256": "58138a25b5ff344299248077d9f9bc3224e251c633d104918c0228d539b96c0a"
+    },
+    {
+      "name": "Tenda AC",
+      "packageName": "dev.routerhub.extension.tenda",
+      "versionCode": 1,
+      "versionName": "1.0.0",
+      "apiVersion": 3,
+      "apk": "apk/dev.routerhub.extension.tenda-v1.0.0.apk",
+      "size": 193846,
+      "sha256": "dc079c0a6f6a25bd8d35e4b6508c3ab0371759ac3edbb7bc7a40ee492aa451c4"
+    },
+    {
+      "name": "TP-Link ADSL2+",
+      "packageName": "dev.routerhub.extension.tplink",
+      "versionCode": 1,
+      "versionName": "1.0.0",
+      "apiVersion": 3,
+      "apk": "apk/dev.routerhub.extension.tplink-v1.0.0.apk",
+      "size": 636450,
+      "sha256": "2302902c5791822af9bed6f107471c17b7713d9f0b057132efabc1270368eda3"
+    }
+  ]
+}
