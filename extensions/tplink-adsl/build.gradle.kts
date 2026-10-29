@@ -24,7 +24,7 @@ android {
             // The host finds the entry point by its name in the manifest meta-data, and R8 doesn't
             // treat meta-data as a keep root. Extensions are small, so we simply don't minify.
             isMinifyEnabled = false
-            // signingConfig = signingConfigs.getByName("official")  // the key the host trusts
+            // Signed with the official key by the root build.gradle.kts when CI provides it.
         }
     }
 

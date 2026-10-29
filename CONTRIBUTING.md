@@ -87,6 +87,21 @@ Do not turn minification on: the app finds your entry class by name.
 - Keep it focused: one extension or one change per pull request.
 - CI builds every extension and runs the unit tests. Please run `./gradlew testDebugUnitTest assembleDebug` first.
 - Write commit messages in the imperative mood ("Add the QoS page"), with the reason in the body when it is not obvious.
+- **Raise `versionCode` and `versionName`** in the extension's `build.gradle.kts` when you change it. Only a new
+  versionCode is published; without it your change is merged but not shipped.
+
+## Publishing
+
+Like Keiyoushi, the extensions are published from the `repo` branch, not from GitHub releases. After every merge to
+`main`, the [Publish workflow](.github/workflows/publish.yml) builds the release APKs, signs them with the official
+key (the one the app shows as **Official**), checks each signature, and runs
+[`publish-repo.py`](.github/scripts/publish-repo.py). That script copies new versions to `apk/` on the `repo` branch
+and rewrites `index.json` and `index.min.json`. The
+[website](https://atasanbratan.github.io/routerhub/extensions/) lists what is there.
+
+The workflow needs four Actions secrets holding the extensions key: `SIGNING_KEY` (the PKCS#12 keystore, Base64 on
+one line), `ALIAS`, `KEY_STORE_PASSWORD` and `KEY_PASSWORD`. Forks don't have them, so the workflow only runs in this
+repository.
 
 ## Licensing
 

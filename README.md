@@ -52,15 +52,18 @@ Details: [TP-Link TD-W8960N](docs/tplink-td-w8960n.md) · [OpenWrt](docs/openwrt
 ## Install
 
 You need the [RouterHub app](https://github.com/atasanbratan/routerhub) first. Extensions are separate APKs
-that you install next to it. There are no signed releases yet, so you build from source or take the APKs from CI:
+that you install next to it.
 
+- **Signed APKs:** pick them from the [extension list](https://atasanbratan.github.io/routerhub/extensions/). They are
+  signed with the official key, so the app shows them as **Official** and loads them at once. The list is built from
+  the [`repo` branch](https://github.com/atasanbratan/routerhub-extensions/tree/repo), which every merge to `main` updates.
 - **From a CI run:** open the latest run of the [CI workflow](https://github.com/atasanbratan/routerhub-extensions/actions/workflows/ci.yml)
   and download the `extensions-debug` artifact.
 - **From source:** see [Build and test](#build-and-test).
 
 Install an APK with `adb install -r <file>.apk` or by opening it on the device. Then open the app's
 **Browse → Extensions**. An extension signed with the same debug key as your app is shown as a
-*Development build* and loads at once. Anything else shows a **Trust** button: the app never loads code from
+*Development build* and loads at once (debug builds of the app only). Anything else shows a **Trust** button: the app never loads code from
 a signer you have not approved. Finally add a router on the **Routers** tab and pick its firmware.
 
 Not sure where to start? Install the **Demo** extension and add a *Demo router* with any address and password.

@@ -1,0 +1,138 @@
+name: Publish
+
+# Builds every extension signed with the official key and publishes the APKs and the index to the
+# `repo` branch, as Keiyoushi does. The website lists what is there:
+# https://atasanbratan.github.io/routerhub/extensions/
+#
+# Only changed versions are published: bump versionCode (and versionName) of an extension to ship it.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "extensions/**"
+      - "gradle/**"
+      - "*.gradle.kts"
+      - "gradle.properties"
+      - ".github/scripts/publish-repo.py"
+      - ".github/workflows/publish.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: publish
+  cancel-in-progress: false # never interrupt a push to the repo branch
+
+permissions:
+  contents: read
+
+env:
+  # The certificate the app trusts as "Official" (routerhub.officialSigners in the app repository).
+  EXTENSIONS_SIGNER_SHA256: 7f3b12b954803f03ab9996563f834c7ed237ad55ebe631a2cc4c26eefbef0e39
+
+jobs:
+  build:
+    name: Build the signed extensions
+    if: github.repository == 'atasanbratan/routerhub-extensions'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Write the signing key
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+        run: |
+          if [ -z "$SIGNING_KEY" ]; then
+            echo "::error::The SIGNING_KEY secret is not set (see CONTRIBUTING.md, Publishing)"
+            exit 1
+          fi
+          printf '%s' "$SIGNING_KEY" | base64 -d > "$RUNNER_TEMP/extensions.jks"
+
+      - name: Test and build the release APKs
+        env:
+          ROUTERHUB_KEYSTORE: ${{ runner.temp }}/extensions.jks
+          ROUTERHUB_KEYSTORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          ROUTERHUB_KEY_ALIAS: ${{ secrets.ALIAS }}
+          ROUTERHUB_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: ./gradlew testReleaseUnitTest assembleRelease --stacktrace
+
+      - name: Delete the signing key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/extensions.jks"
+
+      - name: Check every signature
+        run: |
+          apksigner="$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)/apksigner"
+          mkdir -p dist
+          for apk in extensions/*/build/outputs/apk/release/*.apk; do
+            signer="$("$apksigner" verify --print-certs "$apk" | sed -n 's/.*certificate SHA-256 digest: //p' | head -1)"
+            if [ "$signer" != "$EXTENSIONS_SIGNER_SHA256" ]; then
+              echo "::error::$apk is signed by '$signer', expected $EXTENSIONS_SIGNER_SHA256"
+              exit 1
+            fi
+            cp "$apk" dist/
+          done
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: extensions
+          path: dist/
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    name: Update the repo branch
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          sparse-checkout: .github/scripts
+      - uses: actions/download-artifact@v8
+        with:
+          name: extensions
+          path: dist
+      - name: Check out the repo branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if git ls-remote --exit-code --heads "$url" repo >/dev/null; then
+            git clone --depth 1 --branch repo "$url" repo
+          else
+            # First run: start the branch with no history from main.
+            git init -b repo repo
+            git -C repo remote add origin "$url"
+          fi
+      - name: Update the APKs and the index
+        run: python3 .github/scripts/publish-repo.py --repo repo --signer "$EXTENSIONS_SIGNER_SHA256" dist/*.apk
+      - name: Commit and push
+        run: |
+          cd repo
+          cat > README.md <<'EOF'
+          # RouterHub extension repository
+
+          Built and published by the [Publish workflow](https://github.com/atasanbratan/routerhub-extensions/actions/workflows/publish.yml)
+          from the `main` branch. Do not edit by hand.
+
+          - `index.json` / `index.min.json`: the list of extensions, with versions, API levels and checksums
+          - `apk/`: the signed APKs
+
+          Browse them at https://atasanbratan.github.io/routerhub/extensions/
+          EOF
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+            exit 0
+          fi
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -m "Publish from ${GITHUB_SHA::7}"
+          git push origin repo
