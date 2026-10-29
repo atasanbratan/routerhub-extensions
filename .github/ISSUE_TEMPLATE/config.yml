@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: A problem with the app itself
+    url: https://github.com/atasanbratan/routerhub/issues/new/choose
+    about: The UI, loading extensions and the SDK live in the app repository.
+  - name: Questions and ideas
+    url: https://github.com/atasanbratan/routerhub-extensions/discussions
+    about: Ask a question, share an idea or show the extension you wrote.
+  - name: Report a security vulnerability
+    url: https://github.com/atasanbratan/routerhub-extensions/security/advisories/new
+    about: Please report security problems privately, not in a public issue.

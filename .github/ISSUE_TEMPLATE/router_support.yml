@@ -1,0 +1,55 @@
+name: Router support request
+description: Ask for a router that has no extension yet
+labels: ["router-support"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks. Any router with a web admin page, an SSH shell or a Telnet CLI can have an extension. A request makes
+        it easy for someone to pick it up, especially if you can help test.
+
+        **Please remove anything personal** from what you write: Wi-Fi names and passwords, router passwords,
+        public IP addresses, serial numbers and MAC addresses.
+  - type: input
+    id: model
+    attributes:
+      label: Router make and model
+      placeholder: "Acme AX1800, hardware revision v2"
+    validations:
+      required: true
+  - type: input
+    id: firmware
+    attributes:
+      label: Firmware version
+      placeholder: "1.2.3 Build 240101"
+    validations:
+      required: true
+  - type: checkboxes
+    id: interfaces
+    attributes:
+      label: How can it be managed?
+      options:
+        - label: A web admin page
+        - label: SSH
+        - label: Telnet
+        - label: Something else (describe below)
+  - type: textarea
+    id: wanted
+    attributes:
+      label: What would you like to do from the app?
+      description: Status and clients, Wi-Fi settings, port forwarding, reboot, ...
+    validations:
+      required: true
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Can you help?
+      options:
+        - label: I can test an extension on this router
+        - label: I can share captured pages or command output, with everything personal removed
+        - label: I would like to write the extension myself
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
+      description: Links to documentation, whether the router is a common one, quirks you know of.

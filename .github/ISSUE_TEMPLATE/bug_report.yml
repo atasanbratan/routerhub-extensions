@@ -1,0 +1,64 @@
+name: Bug report
+description: An extension does not work as it should
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time. Problems with the app itself (the UI, loading extensions) belong in the
+        [app repository](https://github.com/atasanbratan/routerhub/issues/new/choose).
+
+        **Please remove anything personal** from what you paste: Wi-Fi names and passwords, router passwords,
+        public IP addresses, serial numbers and MAC addresses.
+  - type: dropdown
+    id: extension
+    attributes:
+      label: Extension
+      options:
+        - TP-Link ADSL2+
+        - OpenWrt
+        - Demo
+        - Another extension
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Extension and app versions
+      description: The extension version is shown under Browse, Extensions; the app version under More.
+      placeholder: "extension 1.0.0, app 0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: router
+    attributes:
+      label: Router model and firmware
+      placeholder: "TD-W8960N V7, firmware 1.1.0 Build 171106"
+    validations:
+      required: true
+  - type: dropdown
+    id: protocol
+    attributes:
+      label: Protocol
+      options:
+        - Web
+        - SSH
+        - Telnet
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what did you get instead? The exact message helps.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: |
+        For crashes, `adb logcat -d | grep -i routerhub` is useful. Remove anything personal first.
+      render: shell
+    validations:
+      required: false

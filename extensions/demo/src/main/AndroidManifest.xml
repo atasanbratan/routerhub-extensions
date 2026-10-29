@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    A headless extension: no activities, services or receivers, and no permissions. Its code only
+    ever runs inside the RouterHub host process.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Discovery tag the host scans for. required="false" so no installer rejects the APK. -->
+    <uses-feature
+        android:name="dev.routerhub.extension"
+        android:required="false" />
+
+    <application
+        android:allowBackup="false"
+        android:hasCode="true"
+        android:label="RouterHub: Demo (fake router)">
+
+        <!-- Public no-arg class implementing RouterExtension. Leading dot = relative to package. -->
+        <meta-data
+            android:name="dev.routerhub.extension.class"
+            android:value=".DemoExtension" />
+
+        <!-- router-api version this APK needs (3 added editable list fields). -->
+        <meta-data
+            android:name="dev.routerhub.extension.api"
+            android:value="3" />
+    </application>
+</manifest>

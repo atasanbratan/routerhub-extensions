@@ -1,0 +1,24 @@
+[versions]
+agp = "8.13.1"
+kotlin = "2.2.20"
+coroutines = "1.10.2"
+okhttp = "4.12.0"
+jsoup = "1.21.1"
+jsch = "0.2.20"
+junit = "4.13.2"
+# The router-api (SDK) build the extensions compile against: a commit of the app repository, which
+# JitPack builds on demand. Move to a release tag once the app repository has one.
+routerhub-api = "18a7fb8"
+
+[libraries]
+routerhub-api = { module = "com.github.atasanbratan:routerhub", version.ref = "routerhub-api" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+jsch = { module = "com.github.mwiede:jsch", version.ref = "jsch" }
+junit = { module = "junit:junit", version.ref = "junit" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-feature
+        android:name="dev.routerhub.extension"
+        android:required="false" />
+
+    <application
+        android:allowBackup="false"
+        android:hasCode="true"
+        android:label="RouterHub: OpenWrt (SSH)">
+
+        <meta-data
+            android:name="dev.routerhub.extension.class"
+            android:value=".OpenWrtExtension" />
+
+        <meta-data
+            android:name="dev.routerhub.extension.api"
+            android:value="1" />
+    </application>
+</manifest>
