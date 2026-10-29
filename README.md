@@ -32,6 +32,7 @@
 | Extension | Protocols | What it gives you | Status |
 |---|---|---|---|
 | **[TP-Link ADSL2+](extensions/tplink-adsl)** | Web, Telnet | Status, DSL line stats, connected clients, reboot, and **21 settings pages**: Wi-Fi, security, guest network, MAC and website filters, port forwarding, static routes, DHCP and reservations, Dynamic DNS, DMZ, UPnP, time, log, remote access, SNMP and more | **Verified on real hardware** (TD-W8960N V7) |
+| **[Tenda AC](extensions/tenda-ac)** | Web | Status, connected clients, Wi-Fi switch, reboot, and **18 settings pages**: Wi-Fi, guest network, channel and mode, transmit power and WPS, LAN and DHCP, reservations, port forwarding, DMZ, UPnP, firewall, MAC filter, Dynamic DNS, remote management, time, LEDs, scheduled reboot, log, login password | **Verified on real hardware** (AC10 V6.0, firmware V16.03.61.08) |
 | **[OpenWrt](extensions/openwrt-ssh)** | SSH | Status, connected clients, Wi-Fi switch, reboot | Unit-tested. **Hardware reports welcome** |
 | **[Demo](extensions/demo)** | none | A fake router that lives in memory and shows every field type and the error handling | Try the app with no router. Also the template to copy |
 
@@ -130,7 +131,7 @@ Every kind of help is welcome: a new extension, a fix, a hardware test report, a
 
 Use at your own risk. Changing router settings can interrupt or lock you out of your network, so keep a way to
 reset the device. The TP-Link extension was developed and tested on a single TD-W8960N V7; other models and
-firmware revisions may differ. TP-Link and OpenWrt are trademarks of their owners. They appear here only to say
+firmware revisions may differ. TP-Link, Tenda and OpenWrt are trademarks of their owners. They appear here only to say
 what an extension works with, and this project is not affiliated with or endorsed by either.
 
 ## License
