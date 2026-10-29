@@ -121,6 +121,36 @@ class DemoFirmwareTest {
     }
 
     @Test
+    fun `the MAC filter normalises addresses and refuses malformed ones`() {
+        val router = firmware()
+        val before = runBlocking { router.readSettings("mac-filter").rows("devices") }
+        assertEquals(listOf(listOf("02:00:00:00:00:21")), before)
+
+        runBlocking {
+            router.writeSettings("mac-filter", mapOf("devices" to TableCodec.encode(before + listOf(listOf(" 02:AA:BB:CC:DD:EE ")))))
+        }
+        val after = runBlocking { router.readSettings("mac-filter").rows("devices") }
+        assertEquals(before + listOf(listOf("02:aa:bb:cc:dd:ee")), after)
+
+        val error = try {
+            runBlocking { router.writeSettings("mac-filter", mapOf("devices" to TableCodec.encode(listOf(listOf("00-11-22-33-44-55"))))) }
+            null
+        } catch (e: InvalidSettingException) {
+            e
+        }
+        assertEquals("devices", error?.key)
+        assertTrue("the message shows the expected format", error?.message.orEmpty().contains("00:11:22:33:44:55"))
+        assertEquals("a refused list changes nothing", after, runBlocking { router.readSettings("mac-filter").rows("devices") })
+    }
+
+    @Test
+    fun `an allow-only MAC filter with no devices is refused`() {
+        val router = firmware()
+        rejected("devices") { router.writeSettings("mac-filter", mapOf("mode" to "allow", "devices" to "")) }
+        runBlocking { assertEquals("deny", (router.readSettings("mac-filter").field("mode") as SettingField.Choice).value) }
+    }
+
+    @Test
     fun `the system log is read only`() {
         val router = firmware()
         val log = runBlocking { router.readSettings("log").field("log") as SettingField.Table }

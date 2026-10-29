@@ -38,6 +38,9 @@ internal class DemoRouter {
     private var dhcpEnd = "192.168.1.199"
     private var leaseHours = 24L
 
+    private var macMode = "deny"
+    private var macDevices: List<List<String>> = listOf(listOf("02:00:00:00:00:21"))
+
     private var forwards: List<List<String>> = listOf(
         listOf("Web server", "tcp", "8080", "192.168.1.20", "80"),
         listOf("Game server", "udp", "27015", "192.168.1.40", "27015"),
@@ -99,6 +102,7 @@ internal class DemoRouter {
 
     fun pages() = listOf(
         SettingsPageInfo("wifi", "Wi-Fi", "Wireless", "Name, visibility and password"),
+        SettingsPageInfo("mac-filter", "MAC filter", "Wireless", "Allow or block specific devices on Wi-Fi"),
         SettingsPageInfo("dhcp", "DHCP server", "Network", "Hands out addresses to the devices on your network"),
         SettingsPageInfo("port-forwarding", "Port forwarding", "Network", "Send incoming traffic to a device on your network"),
         SettingsPageInfo("log", "System log", "System", "Recent messages from the router"),
@@ -131,6 +135,29 @@ internal class DemoRouter {
                     ),
                 ),
                 applyWarning = "Applying restarts the Wi-Fi radio. (In this demo nothing really restarts.)",
+            )
+
+            "mac-filter" -> SettingsPage(
+                info = info,
+                fields = listOf(
+                    SettingField.Choice(
+                        "mode", "Mode", macMode,
+                        options = listOf(
+                            ChoiceOption("off", "Off"),
+                            ChoiceOption("allow", "Allow only the devices below"),
+                            ChoiceOption("deny", "Block the devices below"),
+                        ),
+                    ),
+                    SettingField.Table(
+                        key = "devices",
+                        title = "Devices",
+                        columns = listOf(TableColumn("mac", "MAC address", ColumnKind.MAC_ADDRESS, shortTitle = "")),
+                        rows = macDevices,
+                        maxRows = MAX_DEVICES,
+                        itemName = "device",
+                        emptyText = "No devices listed",
+                    ),
+                ),
             )
 
             "dhcp" -> SettingsPage(
@@ -203,6 +230,7 @@ internal class DemoRouter {
     fun write(pageId: String, changes: Map<String, String>) {
         when (pageId) {
             "wifi" -> writeWifi(changes)
+            "mac-filter" -> writeMacFilter(changes)
             "dhcp" -> writeDhcp(changes)
             "port-forwarding" -> writeForwards(changes)
             "password" -> changes["password"]?.let {
@@ -234,6 +262,29 @@ internal class DemoRouter {
         changes["hide"]?.let { hidden = it == "true" }
         changes["security"]?.let { security = it }
         // The password is write-only: a real extension sends it to the router and keeps no copy.
+    }
+
+    private fun writeMacFilter(changes: Map<String, String>) {
+        val mode = changes["mode"] ?: macMode
+        if (mode !in MAC_MODES) throw InvalidSettingException("mode", "Unknown mode \"$mode\"")
+        val rows = changes["devices"]?.let { TableCodec.decode(it) } ?: macDevices
+        if (rows.size > MAX_DEVICES) throw InvalidSettingException("devices", "The router holds at most $MAX_DEVICES devices")
+        val seen = mutableSetOf<String>()
+        val devices = rows.map { row ->
+            if (row.size != 1) throw InvalidSettingException("devices", "A device has one cell, got ${row.size}")
+            val mac = row[0].trim().lowercase()
+            if (!MAC.matches(mac)) {
+                throw InvalidSettingException("devices", "\"${row[0]}\" is not a MAC address (use 00:11:22:33:44:55)")
+            }
+            if (!seen.add(mac)) throw InvalidSettingException("devices", "$mac is listed twice")
+            listOf(mac)
+        }
+        // The same safeguard the TP-Link extension has: an allow-only list with nothing in it would block every device.
+        if (mode == "allow" && devices.isEmpty()) {
+            throw InvalidSettingException("devices", "Allow only needs at least one device, or nobody could connect")
+        }
+        macMode = mode
+        macDevices = devices
     }
 
     private fun writeDhcp(changes: Map<String, String>) {
@@ -288,6 +339,9 @@ internal class DemoRouter {
 
     companion object {
         private const val MAX_RULES = 16
+        private const val MAX_DEVICES = 16
+        private val MAC = Regex("[0-9a-f]{2}(:[0-9a-f]{2}){5}")
+        private val MAC_MODES = setOf("off", "allow", "deny")
         private val PROTOCOLS = setOf("tcp", "udp", "both")
 
         private val LOG = listOf(
