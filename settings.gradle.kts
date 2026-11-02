@@ -35,4 +35,5 @@ rootProject.name = "routerhub-extensions"
 include(":extensions:tplink-adsl")
 include(":extensions:tenda-ac")
 include(":extensions:openwrt-ssh")
+include(":extensions:openwrt-ubus")
 include(":extensions:demo")

@@ -33,10 +33,11 @@
 |---|---|---|---|
 | **[TP-Link ADSL2+](extensions/tplink-adsl)** | Web, Telnet | Status, DSL line stats, connected clients, reboot, and **21 settings pages**: Wi-Fi, security, guest network, MAC and website filters, port forwarding, static routes, DHCP and reservations, Dynamic DNS, DMZ, UPnP, time, log, remote access, SNMP and more | **Verified on real hardware** (TD-W8960N V7) |
 | **[Tenda AC](extensions/tenda-ac)** | Web | Status, connected clients, Wi-Fi switch, reboot, and **18 settings pages**: Wi-Fi, guest network, channel and mode, transmit power and WPS, LAN and DHCP, reservations, port forwarding, DMZ, UPnP, firewall, MAC filter, Dynamic DNS, remote management, time, LEDs, scheduled reboot, log, login password | **Verified on real hardware** (AC10 V6.0, firmware V16.03.61.08) |
+| **[OpenWrt (LuCI)](extensions/openwrt-ubus)** | Web | Status, connected clients, Wi-Fi switch, reboot, and **settings pages**: each Wi-Fi network and radio, LAN and DHCP, internet connection, interfaces, reservations, port forwarding, firewall zones and rules, name and time, log, login password. Network changes roll back by themselves if the router is lost | Tested on a real router with OpenWrt 24.10. **Reports from other versions welcome** |
 | **[OpenWrt](extensions/openwrt-ssh)** | SSH | Status, connected clients, Wi-Fi switch, reboot | Unit-tested. **Hardware reports welcome** |
 | **[Demo](extensions/demo)** | none | A fake router that lives in memory and shows every field type and the error handling | Try the app with no router. Also the template to copy |
 
-Details: [TP-Link TD-W8960N](docs/tplink-td-w8960n.md) · [OpenWrt](docs/openwrt-ssh.md)
+Details: [TP-Link TD-W8960N](docs/tplink-td-w8960n.md) · [OpenWrt (LuCI)](docs/openwrt-ubus.md) · [OpenWrt (SSH)](docs/openwrt-ssh.md)
 
 <table>
   <tr>
@@ -105,7 +106,7 @@ helps: someone else may pick it up.
 
 - **TP-Link:** more pages (QoS, IPTV, ALG, DNS, backup and restore), a Wi-Fi schedule grid editor, and
   advanced radio settings.
-- **OpenWrt:** run it on a real device and tell us what happened. Settings pages for Wi-Fi are the natural next step.
+- **OpenWrt:** run either extension on a real device and tell us what happened.
 - **Your router.** Anything with a web page, an SSH shell or a Telnet CLI can have an extension.
 
 Browse the [`good first issue`](https://github.com/atasanbratan/routerhub-extensions/labels/good%20first%20issue)
