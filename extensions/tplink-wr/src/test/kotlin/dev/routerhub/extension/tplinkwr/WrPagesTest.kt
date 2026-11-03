@@ -66,6 +66,8 @@ internal object Fixtures {
 
     const val LOGIN_OK = """<body><script language="javaScript">window.parent.location.href = "http://192.168.0.1/ABCDEFGHIJKLMNOP/userRpm/Index.htm";</script></body></html>"""
     const val LOGIN_PAGE = """<HTML><HEAD><TITLE>TL-WR940N</TITLE><SCRIPT>var httpAutErrorArray = new Array(0, 1, 0,0);</SCRIPT></HEAD></HTML>"""
+    const val SENT_HOME = """<body><script language="javaScript">window.parent.location.href = "http://192.168.0.1";
+</script></body></html>"""
     const val SESSION_GONE = """<body><script language="javaScript">window.parent.document.cookie="Authorization=;path=/"; window.parent.location.href = "http://192.168.0.1"; </script></body></html>"""
 }
 
@@ -123,5 +125,12 @@ class WrPagesTest {
     fun `quoted values keep their escaped characters`() {
         val arrays = WrPages.arrays("""var a = new Array("x\/y", "say \"hi\"", 5, 0,0 );""")
         assertEquals(listOf("x/y", "say \"hi\"", "5", "0", "0"), arrays["a"])
+    }
+
+    @Test
+    fun `a login sent home is told apart from a refused one`() {
+        assertTrue(WrPages.isSentHome(Fixtures.SENT_HOME))
+        assertFalse(WrPages.isSentHome(Fixtures.LOGIN_PAGE))
+        assertFalse(WrPages.isSentHome(Fixtures.LOGIN_OK))
     }
 }

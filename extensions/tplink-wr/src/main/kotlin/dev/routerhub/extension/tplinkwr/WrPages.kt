@@ -94,9 +94,13 @@ internal object WrPages {
     /** The page a login answers with names the session's own path: `http://host/ABCDEFGHIJKLMNOP/userRpm/Index.htm`. */
     fun sessionToken(loginAnswer: String): String? = TOKEN.find(loginAnswer)?.groupValues?.get(1)
 
+    /** A short answer that only sends the browser to the router's start page, without a session. */
+    fun isSentHome(html: String) = sessionToken(html) == null && html.length < 400 && SENT_HOME.containsMatchIn(html)
+
     /** A page asked for with a stale token answers with a script that drops the cookie and leaves. */
     fun isSessionGone(html: String) = html.contains("document.cookie=\"Authorization=;")
 
     const val RADIO = "wlan0"
+    private val SENT_HOME = Regex("""location\.href\s*=\s*"https?://[^/"]+/?"""")
     private val TOKEN = Regex("""/([A-Z]{16})/userRpm/Index\.htm""")
 }

@@ -1,6 +1,7 @@
 package dev.routerhub.extension.tplinkwr
 
 import dev.routerhub.api.Capability
+import dev.routerhub.api.ClientAction
 import dev.routerhub.api.ConnectedClient
 import dev.routerhub.api.ConnectionConfig
 import dev.routerhub.api.InvalidConfigurationException
@@ -10,6 +11,8 @@ import dev.routerhub.api.RouterExtension
 import dev.routerhub.api.RouterFirmware
 import dev.routerhub.api.RouterFirmwareFactory
 import dev.routerhub.api.RouterStatus
+import dev.routerhub.api.SettingsPage
+import dev.routerhub.api.SettingsPageInfo
 
 /** Entry point named in AndroidManifest.xml. Must keep a public no-arg constructor. */
 class TpLinkWrExtension : RouterExtension {
@@ -30,7 +33,13 @@ internal class TpLinkWrFactory(private val model: WrModel) : RouterFirmwareFacto
     override val displayName = model.displayName
     override val vendor = "TP-Link"
     override val protocol = Protocol.WEB
-    override val capabilities = setOf(Capability.STATUS, Capability.CONNECTED_CLIENTS, Capability.REBOOT)
+    override val capabilities = setOf(
+        Capability.STATUS,
+        Capability.CONNECTED_CLIENTS,
+        Capability.CLIENT_ACTIONS,
+        Capability.REBOOT,
+        Capability.SETTINGS,
+    )
 
     override fun create(config: ConnectionConfig): RouterFirmware {
         val web = config as? ConnectionConfig.Web
@@ -56,8 +65,24 @@ internal class TpLinkWrFirmware(
         } catch (_: RouterException) {
             null
         }
-        return WrPages.clients(dhcp, stations)
+        val clients = WrPages.clients(dhcp, stations)
+        return try {
+            WrClientActions.withBlocked(api, clients)
+        } catch (_: RouterException) {
+            // The block list only adds to the list; it isn't worth losing the clients over.
+            clients
+        }
     }
+
+    override suspend fun clientActions(client: ConnectedClient): List<ClientAction> = WrClientActions.offered(api, client)
+
+    override suspend fun runClientAction(client: ConnectedClient, actionId: String) = WrClientActions.run(api, client, actionId)
+
+    override suspend fun listSettingsPages(): List<SettingsPageInfo> = WrSettings.pages.map { it.info }
+
+    override suspend fun readSettings(pageId: String): SettingsPage = WrSettings.page(pageId).read(api)
+
+    override suspend fun writeSettings(pageId: String, changes: Map<String, String>) = WrSettings.page(pageId).apply(api, changes)
 
     override suspend fun reboot() {
         api.page("SysRebootRpm.htm", "Reboot=Reboot")

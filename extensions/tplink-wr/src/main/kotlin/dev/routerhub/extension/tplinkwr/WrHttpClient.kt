@@ -9,6 +9,7 @@ import dev.routerhub.api.RouterSessionExpiredException
 import dev.routerhub.api.RouterUnreachableException
 import dev.routerhub.api.WrongCredentialsException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import okhttp3.Call
@@ -71,9 +72,19 @@ internal class WrHttpClient(config: ConnectionConfig.Web) : WrApi {
 
     override suspend fun login() {
         session = null
-        val answer = get("/userRpm/LoginRpm.htm?Save=Save", referer = baseUrl.toString())
-        checkNotBusy(answer)
-        session = WrPages.sessionToken(answer) ?: throw WrongCredentialsException()
+        repeat(LOGIN_ATTEMPTS) {
+            val answer = get("/userRpm/LoginRpm.htm?Save=Save", referer = baseUrl.toString())
+            checkNotBusy(answer)
+            WrPages.sessionToken(answer)?.let {
+                session = it
+                return
+            }
+            // Right after a logout the router answers the first login by sending the browser home;
+            // the next one works. A wrong password gets the login page instead.
+            if (!WrPages.isSentHome(answer)) throw WrongCredentialsException()
+            delay(RETRY_DELAY_MILLIS)
+        }
+        throw WrongCredentialsException()
     }
 
     override suspend fun page(name: String, query: String): String {
@@ -131,6 +142,9 @@ internal class WrHttpClient(config: ConnectionConfig.Web) : WrApi {
     }
 
     private companion object {
+        const val LOGIN_ATTEMPTS = 3
+        const val RETRY_DELAY_MILLIS = 500L
+
         // The firmware misspells "exceeds"; match both in case a later build fixes it.
         val BUSY_MARKERS = listOf("execeeds maximum", "exceeds maximum")
 
