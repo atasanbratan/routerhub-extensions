@@ -8,7 +8,7 @@ jsch = "0.2.20"
 junit = "4.13.2"
 # The router-api (SDK) build the extensions compile against: a commit of the app repository, which
 # JitPack builds on demand. Move to a release tag once the app repository has one.
-routerhub-api = "18a7fb8"
+routerhub-api = "1a5e1f8"
 
 [libraries]
 routerhub-api = { module = "com.github.atasanbratan:routerhub", version.ref = "routerhub-api" }
