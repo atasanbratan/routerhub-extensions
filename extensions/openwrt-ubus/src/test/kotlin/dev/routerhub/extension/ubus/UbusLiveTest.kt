@@ -1,5 +1,6 @@
 package dev.routerhub.extension.ubus
 
+import dev.routerhub.api.ConnectedClient
 import dev.routerhub.api.ConnectionConfig
 import dev.routerhub.api.RouterException
 import dev.routerhub.api.RouterFirmware
@@ -155,5 +156,32 @@ class UbusLiveTest {
         }
         assertEquals(before, isolated())
         println("WRITE   Wi-Fi option changed and put back")
+    }
+
+    @Test
+    fun `a schedule across midnight is added and removed again`() = live(write = true) { firmware ->
+        val before = rows(firmware, "schedules", SchedulesPage.SCHEDULES)
+        val schedule = listOf("routerhub-test", "02:00:00:00:fe:02", "22:00", "07:00", "Mon Tue Wed Thu Fri")
+        try {
+            firmware.writeSettings("schedules", mapOf(SchedulesPage.SCHEDULES to TableCodec.encode(before + listOf(schedule))))
+            assertEquals(before + listOf(schedule), rows(firmware, "schedules", SchedulesPage.SCHEDULES))
+        } finally {
+            firmware.writeSettings("schedules", mapOf(SchedulesPage.SCHEDULES to TableCodec.encode(before)))
+        }
+        assertEquals(before, rows(firmware, "schedules", SchedulesPage.SCHEDULES))
+        println("WRITE   schedule added and removed")
+    }
+
+    @Test
+    fun `a device is paused and resumed`() = live(write = true) { firmware ->
+        val device = ConnectedClient("02:00:00:00:fe:03", hostname = "routerhub-test")
+        try {
+            firmware.runClientAction(device, ClientActions.PAUSE)
+            assertEquals(ClientActions.RESUME, firmware.clientActions(device).first().id)
+        } finally {
+            firmware.runClientAction(device, ClientActions.RESUME)
+        }
+        assertEquals(ClientActions.PAUSE, firmware.clientActions(device).first().id)
+        println("WRITE   device paused and resumed")
     }
 }

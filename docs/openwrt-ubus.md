@@ -40,6 +40,7 @@ to pin it.
 | Network | Address reservations | Fixed addresses for devices |
 | Firewall | Port forwarding | IPv4 forwards from WAN to LAN |
 | Firewall | Blocked devices | Devices kept off the internet |
+| Firewall | Internet schedules | Devices kept off the internet at set times of the week |
 | Firewall | Zones and rules | Shows what the firewall allows |
 | System | Name and time | Hostname, time zone, time sync |
 | System | System log | Shows the latest 200 messages |
@@ -51,6 +52,15 @@ Tap a client to copy its MAC address, IP address or name, block or allow its int
 Blocking adds a firewall rule that refuses traffic from that MAC address to the WAN, named `RouterHub block`. The device
 stays on your network. Connections it already has open can keep working until they end, and a device that changes its
 MAC address gets around the block.
+
+**Pause internet for 1 hour** adds a similar rule, named `RouterHub pause`, that stops applying at a date an hour after
+the router's own clock. The router lifts it by itself, even if this phone is gone; **Resume internet** removes it
+sooner. Ended pauses are cleared the next time a device is paused.
+
+**Internet schedules** are rules named `RouterHub schedule` with a start time, an end time and the days. Times follow the
+router's clock and time zone, so its time sync should be on. A window that crosses midnight, like 22:00 to 07:00, works.
+Days apply hour by hour: a 22:00 to 07:00 schedule on Monday to Friday also covers early Monday, but not early Saturday.
+Pauses and schedules were tested in VMs on OpenWrt 21.02 (fw3) and 23.05 (firewall4).
 
 Wi-Fi networks that connect the router to another network (client mode) get no page, as a wrong value there would cut
 the router's own uplink. The status still recognises such an uplink as the WAN.

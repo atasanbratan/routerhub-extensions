@@ -63,7 +63,7 @@ class ClientActionsTest {
         val before = ReservationsPage.rows(router)
         run(ClientActions.RESERVE)
         assertEquals(before + listOf(listOf("my-laptop", client.macAddress, "192.0.2.50")), ReservationsPage.rows(router))
-        assertEquals(listOf(ClientActions.BLOCK, ClientActions.RELEASE), ids())
+        assertEquals(listOf(ClientActions.PAUSE, ClientActions.BLOCK, ClientActions.RELEASE), ids())
         run(ClientActions.RELEASE)
         assertEquals(before, ReservationsPage.rows(router))
     }
@@ -84,7 +84,38 @@ class ClientActionsTest {
     }
 
     @Test
-    fun `without an address only blocking is offered`() = runBlocking {
-        assertEquals(listOf(ClientActions.BLOCK), ids(client.copy(ipAddress = null)))
+    fun `without an address only pausing and blocking are offered`() = runBlocking {
+        assertEquals(listOf(ClientActions.PAUSE, ClientActions.BLOCK), ids(client.copy(ipAddress = null)))
+    }
+
+    @Test
+    fun `pausing adds a rule that ends an hour later by the router's clock, and resuming removes it`() = runBlocking {
+        assertTrue(ClientActions.PAUSE in ids())
+        run(ClientActions.PAUSE)
+        val rule = rpcd.sections("firewall", "rule").last()
+        assertEquals("RouterHub pause: my-laptop", rule["name"])
+        // The fake router's local time is 2027-01-15 08:00:00.
+        assertEquals("2027-01-15T09:00:00", rule["stop_date"])
+        assertEquals(listOf("lan", "wan", client.macAddress, "REJECT"), listOf("src", "dest", "src_mac", "target").map { rule[it] })
+
+        val offered = ClientActions.offered(router, client)
+        assertEquals(ClientActions.RESUME, offered.first().id)
+        assertEquals("Paused until 09:00, router time", offered.first().summary)
+        assertEquals(setOf(client.macAddress), Pauses.active(router, Pauses.routerNow(router)).keys)
+
+        run(ClientActions.RESUME)
+        assertTrue(rpcd.sections("firewall", "rule").none { it["name"].toString().startsWith("RouterHub pause") })
+        assertTrue(ClientActions.PAUSE in ids())
+    }
+
+    @Test
+    fun `an ended pause no longer counts and is cleared by the next one`() = runBlocking {
+        val ended = mapOf(
+            ".type" to "rule", "name" to "RouterHub pause: old", "src_mac" to "02:00:00:00:aa:09", "stop_date" to "2027-01-15T07:59:00",
+        )
+        rpcd.call("uci", "add", mapOf("config" to "firewall", "type" to "rule", "values" to ended), false)
+        assertTrue(Pauses.active(router, Pauses.routerNow(router)).isEmpty())
+        run(ClientActions.PAUSE)
+        assertEquals(listOf("RouterHub pause: my-laptop"), rpcd.sections("firewall", "rule").map { it["name"] }.filter { it.toString().startsWith("RouterHub pause") })
     }
 }

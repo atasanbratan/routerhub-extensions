@@ -114,5 +114,20 @@
   "Transmit power": "قدرة الإرسال",
   "Driver default": "افتراضي التعريف",
   "Country code": "رمز الدولة",
-  "Decides the channels and power that are legal": "يحدد القنوات والقدرة المسموح بها قانونًا"
+  "Decides the channels and power that are legal": "يحدد القنوات والقدرة المسموح بها قانونًا",
+  "Internet schedules": "جداول الإنترنت",
+  "Keep devices off the internet at set times": "إبعاد أجهزة عن الإنترنت في أوقات محددة",
+  "Every day": "كل يوم",
+  "Monday to Friday": "من الإثنين إلى الجمعة",
+  "Saturday and Sunday": "السبت والأحد",
+  "Off from": "إيقاف من",
+  "Back at": "العودة في",
+  "Days": "الأيام",
+  "Schedules": "الجداول",
+  "Times follow the router's clock and time zone. Days count hour by hour: a 22:00 to 07:00 schedule on Monday to Friday also covers early Monday, but not early Saturday.": "تتبع الأوقات ساعة الراوتر ومنطقته الزمنية. تُحسب الأيام ساعة بساعة: جدول من 22:00 إلى 07:00 من الإثنين إلى الجمعة يشمل أيضًا فجر الإثنين، لكن لا يشمل فجر السبت.",
+  "schedule": "جدول",
+  "No schedules": "لا توجد جداول",
+  "Resume internet": "استئناف الإنترنت",
+  "Pause internet for 1 hour": "إيقاف الإنترنت مؤقتًا لمدة ساعة",
+  "The router lifts the pause by itself": "يرفع الراوتر الإيقاف المؤقت تلقائيًا"
 }

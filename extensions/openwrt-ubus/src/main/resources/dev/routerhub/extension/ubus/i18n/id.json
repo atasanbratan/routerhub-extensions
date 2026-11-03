@@ -114,5 +114,20 @@
   "Transmit power": "Daya pancar",
   "Driver default": "Bawaan driver",
   "Country code": "Kode negara",
-  "Decides the channels and power that are legal": "Menentukan kanal dan daya yang legal"
+  "Decides the channels and power that are legal": "Menentukan kanal dan daya yang legal",
+  "Internet schedules": "Jadwal internet",
+  "Keep devices off the internet at set times": "Putuskan internet perangkat pada jam tertentu",
+  "Every day": "Setiap hari",
+  "Monday to Friday": "Senin sampai Jumat",
+  "Saturday and Sunday": "Sabtu dan Minggu",
+  "Off from": "Mati mulai",
+  "Back at": "Kembali pukul",
+  "Days": "Hari",
+  "Schedules": "Jadwal",
+  "Times follow the router's clock and time zone. Days count hour by hour: a 22:00 to 07:00 schedule on Monday to Friday also covers early Monday, but not early Saturday.": "Waktu mengikuti jam dan zona waktu router. Hari dihitung per jam: jadwal 22:00 sampai 07:00 pada Senin sampai Jumat juga mencakup dini hari Senin, tetapi tidak dini hari Sabtu.",
+  "schedule": "jadwal",
+  "No schedules": "Belum ada jadwal",
+  "Resume internet": "Lanjutkan internet",
+  "Pause internet for 1 hour": "Jeda internet selama 1 jam",
+  "The router lifts the pause by itself": "Router mencabut jeda dengan sendirinya"
 }

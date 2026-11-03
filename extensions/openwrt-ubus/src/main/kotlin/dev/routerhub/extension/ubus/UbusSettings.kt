@@ -42,6 +42,7 @@ internal object UbusSettings {
         ReservationsPage,
         PortForwardsPage,
         BlockedDevicesPage,
+        SchedulesPage,
         FirewallPage,
         SystemPage,
         SystemLogPage,

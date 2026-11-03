@@ -4,6 +4,7 @@ import dev.routerhub.api.ClientAction
 import dev.routerhub.api.ConnectedClient
 import dev.routerhub.api.InvalidConfigurationException
 import dev.routerhub.api.TableCodec
+import java.time.format.DateTimeFormatter
 
 /** Shortcuts onto the Blocked devices and Address reservations pages, which do the validating and applying. */
 internal object ClientActions {
@@ -11,14 +12,22 @@ internal object ClientActions {
     const val ALLOW = "allow"
     const val RESERVE = "reserve"
     const val RELEASE = "release"
+    const val PAUSE = "pause"
+    const val RESUME = "resume"
+    private const val PAUSE_MINUTES = 60L
+    private val CLOCK = DateTimeFormatter.ofPattern("HH:mm")
 
     private val DNS_NAME = Regex("[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?")
 
     suspend fun offered(router: UbusRouter, client: ConnectedClient): List<ClientAction> = buildList {
         val mac = client.macAddress.lowercase()
+        val pausedUntil = Pauses.active(router, Pauses.routerNow(router))[mac]
         if (mac in BlockedDevicesPage.macs(router)) {
             add(ClientAction(ALLOW, "Allow internet", "Removes the block on this device"))
+        } else if (pausedUntil != null) {
+            add(ClientAction(RESUME, "Resume internet", "Paused until ${pausedUntil.format(CLOCK)}, router time"))
         } else {
+            add(ClientAction(PAUSE, "Pause internet for 1 hour", "The router lifts the pause by itself"))
             add(
                 ClientAction(
                     BLOCK,
@@ -43,6 +52,8 @@ internal object ClientActions {
             ALLOW -> blocked(router, BlockedDevicesPage.rows(router).filter { it[1] != mac }, username)
             RESERVE -> reserve(router, client, mac, username)
             RELEASE -> reservations(router, ReservationsPage.rows(router).filter { it[1] != mac }, username)
+            PAUSE -> Pauses.pause(router, mac, Rules.label(PAUSE, client.hostname.orEmpty().filterNot { it.isISOControl() }.take(64), "The name"), PAUSE_MINUTES)
+            RESUME -> Pauses.resume(router, mac)
             else -> throw InvalidConfigurationException("Unknown action: $actionId")
         }
     }

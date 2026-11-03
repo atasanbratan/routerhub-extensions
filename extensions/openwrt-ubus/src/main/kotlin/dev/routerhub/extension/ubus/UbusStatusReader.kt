@@ -126,7 +126,9 @@ internal object UbusStatusReader {
         val neighbours = arp(router)?.filter { lanDevice.isEmpty() || it.device == lanDevice }?.associateBy { it.mac }
 
         val blockedRows = BlockedDevicesPage.rows(router)
-        val blocked = blockedRows.map { it[1] }.toSet()
+        // A paused device is blocked for now too. Losing the pauses isn't worth losing the list over.
+        val paused = runCatching { Pauses.active(router, Pauses.routerNow(router)).keys }.getOrDefault(emptySet())
+        val blocked = blockedRows.map { it[1] }.toSet() + paused
 
         val macs = stations.keys + (neighbours?.keys ?: leases.keys)
         val away = blockedRows.filter { it[1] !in macs }.map { (name, mac) ->

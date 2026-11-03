@@ -114,5 +114,20 @@
   "Transmit power": "Potência de transmissão",
   "Driver default": "Padrão do driver",
   "Country code": "Código do país",
-  "Decides the channels and power that are legal": "Define os canais e a potência permitidos"
+  "Decides the channels and power that are legal": "Define os canais e a potência permitidos",
+  "Internet schedules": "Horários de internet",
+  "Keep devices off the internet at set times": "Deixe aparelhos sem internet em horários definidos",
+  "Every day": "Todos os dias",
+  "Monday to Friday": "De segunda a sexta",
+  "Saturday and Sunday": "Sábado e domingo",
+  "Off from": "Sem internet a partir de",
+  "Back at": "Volta às",
+  "Days": "Dias",
+  "Schedules": "Horários",
+  "Times follow the router's clock and time zone. Days count hour by hour: a 22:00 to 07:00 schedule on Monday to Friday also covers early Monday, but not early Saturday.": "Os horários seguem o relógio e o fuso horário do roteador. Os dias contam hora a hora: um horário das 22:00 às 07:00 de segunda a sexta também cobre a madrugada de segunda, mas não a de sábado.",
+  "schedule": "horário",
+  "No schedules": "Nenhum horário",
+  "Resume internet": "Retomar internet",
+  "Pause internet for 1 hour": "Pausar internet por 1 hora",
+  "The router lifts the pause by itself": "O roteador encerra a pausa sozinho"
 }
