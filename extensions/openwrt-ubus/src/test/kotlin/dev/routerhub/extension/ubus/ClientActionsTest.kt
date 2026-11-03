@@ -118,4 +118,10 @@ class ClientActionsTest {
         run(ClientActions.PAUSE)
         assertEquals(listOf("RouterHub pause: my-laptop"), rpcd.sections("firewall", "rule").map { it["name"] }.filter { it.toString().startsWith("RouterHub pause") })
     }
+
+    @Test
+    fun `without the router's clock pausing is left out, the other actions stay`() = runBlocking {
+        rpcd.failing["system info"] = UbusCallFailedException("system info", UbusStatus.PERMISSION_DENIED)
+        assertEquals(listOf(ClientActions.BLOCK, ClientActions.RESERVE), ids())
+    }
 }

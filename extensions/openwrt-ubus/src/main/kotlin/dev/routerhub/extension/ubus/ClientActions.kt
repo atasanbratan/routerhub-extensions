@@ -3,6 +3,7 @@ package dev.routerhub.extension.ubus
 import dev.routerhub.api.ClientAction
 import dev.routerhub.api.ConnectedClient
 import dev.routerhub.api.InvalidConfigurationException
+import dev.routerhub.api.RouterException
 import dev.routerhub.api.TableCodec
 import java.time.format.DateTimeFormatter
 
@@ -21,13 +22,19 @@ internal object ClientActions {
 
     suspend fun offered(router: UbusRouter, client: ConnectedClient): List<ClientAction> = buildList {
         val mac = client.macAddress.lowercase()
-        val pausedUntil = Pauses.active(router, Pauses.routerNow(router))[mac]
+        // Without the router's clock, pausing is left out rather than every action with it.
+        val pauses = try {
+            Pauses.active(router, Pauses.routerNow(router))
+        } catch (_: RouterException) {
+            null
+        }
+        val pausedUntil = pauses?.get(mac)
         if (mac in BlockedDevicesPage.macs(router)) {
             add(ClientAction(ALLOW, "Allow internet", "Removes the block on this device"))
         } else if (pausedUntil != null) {
             add(ClientAction(RESUME, "Resume internet", "Paused until ${pausedUntil.format(CLOCK)}, router time"))
         } else {
-            add(ClientAction(PAUSE, "Pause internet for 1 hour", "The router lifts the pause by itself"))
+            if (pauses != null) add(ClientAction(PAUSE, "Pause internet for 1 hour", "The router lifts the pause by itself"))
             add(
                 ClientAction(
                     BLOCK,

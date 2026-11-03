@@ -127,7 +127,11 @@ internal object UbusStatusReader {
 
         val blockedRows = BlockedDevicesPage.rows(router)
         // A paused device is blocked for now too. Losing the pauses isn't worth losing the list over.
-        val paused = runCatching { Pauses.active(router, Pauses.routerNow(router)).keys }.getOrDefault(emptySet())
+        val paused = try {
+            Pauses.active(router, Pauses.routerNow(router)).keys
+        } catch (_: RouterException) {
+            emptySet()
+        }
         val blocked = blockedRows.map { it[1] }.toSet() + paused
 
         val macs = stations.keys + (neighbours?.keys ?: leases.keys)
