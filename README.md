@@ -32,12 +32,13 @@
 | Extension | Protocols | What it gives you | Status |
 |---|---|---|---|
 | **[TP-Link ADSL2+](extensions/tplink-adsl)** | Web, Telnet | Status, DSL line stats, connected clients, reboot, and **21 settings pages**: Wi-Fi, security, guest network, MAC and website filters, port forwarding, static routes, DHCP and reservations, Dynamic DNS, DMZ, UPnP, time, log, remote access, SNMP and more | **Verified on real hardware** (TD-W8960N V7) |
+| **[TP-Link Wi-Fi routers](extensions/tplink-wr)** | Web | Status, connected clients (wired or Wi-Fi) and reboot, for TP-Link's classic web interface. Settings pages are coming | Status and clients **verified on real hardware** (TL-WR940N v4/v5, firmware 3.17.1). Reboot not tried on the router yet |
 | **[Tenda AC](extensions/tenda-ac)** | Web | Status, connected clients, Wi-Fi switch, reboot, and **18 settings pages**: Wi-Fi, guest network, channel and mode, transmit power and WPS, LAN and DHCP, reservations, port forwarding, DMZ, UPnP, firewall, MAC filter, Dynamic DNS, remote management, time, LEDs, scheduled reboot, log, login password. Block and allow from the clients list, through the MAC filter (not yet tried on the router) | **Verified on real hardware** (AC10 V6.0, firmware V16.03.61.08) |
 | **[OpenWrt (LuCI)](extensions/openwrt-ubus)** | Web | Status, connected clients, Wi-Fi switch, reboot, and **settings pages**: each Wi-Fi network and radio, LAN and DHCP, internet connection, interfaces, reservations, port forwarding, blocked devices, internet schedules, firewall zones and rules, name and time, log, login password. Block, pause for an hour or reserve from the clients list. Network changes roll back by themselves if the router is lost | Tested on a real router with OpenWrt 24.10, and in virtual machines with 21.02 to 25.12. **Wi-Fi reports from other versions welcome** |
 | **[OpenWrt](extensions/openwrt-ssh)** | SSH | Status, connected clients, Wi-Fi switch, reboot | Unit-tested. **Hardware reports welcome** |
 | **[Demo](extensions/demo)** | none | A fake router that lives in memory and shows every field type and the error handling | Try the app with no router. Also the template to copy |
 
-Details: [TP-Link TD-W8960N](docs/tplink-td-w8960n.md) · [OpenWrt (LuCI)](docs/openwrt-ubus.md) · [OpenWrt (SSH)](docs/openwrt-ssh.md)
+Details: [TP-Link TD-W8960N](docs/tplink-td-w8960n.md) · [TP-Link TL-WR940N](docs/tplink-wr940n.md) · [OpenWrt (LuCI)](docs/openwrt-ubus.md) · [OpenWrt (SSH)](docs/openwrt-ssh.md)
 
 <table>
   <tr>
