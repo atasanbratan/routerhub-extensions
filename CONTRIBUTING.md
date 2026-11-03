@@ -11,6 +11,9 @@ which makes this a good place to start contributing.
 - **Extend an extension.** The TP-Link extension has a [list of pages still to do](README.md#help-wanted).
 - **Ask for support** for a router you cannot write code for, with a
   [router support request](https://github.com/atasanbratan/routerhub-extensions/issues/new?template=router_support.yml).
+- **Translate.** Each extension keeps its translations in `src/main/resources/<package>/i18n/<language>.json`, mapping
+  the English text to the translated one. Spanish, Portuguese, Indonesian and Arabic exist and need native speakers
+  to review them; new languages are welcome.
 - **Improve the docs**, or help others in [Discussions](https://github.com/atasanbratan/routerhub-extensions/discussions).
 
 Look for the [`good first issue`](https://github.com/atasanbratan/routerhub-extensions/labels/good%20first%20issue)
@@ -75,6 +78,10 @@ explains the manifest, the contract and the loading rules.
 **No real data in the repository.** Captures and fixtures must not contain real SSIDs, passwords, serial numbers,
 MAC addresses, hostnames or public IP addresses. Use locally administered MACs (`02:00:00:00:00:xx`) and the
 documentation address ranges (`192.0.2.0/24`, `198.51.100.0/24`, `203.0.113.0/24`). Scrub screenshots too.
+
+**Text.** Write what the app shows in plain English. When you change or add a title, summary, choice label or
+warning, update the same key in every `i18n/*.json` of that extension, or leave it out: a missing key shows the
+English text. Text built at run time (`"Radio $name"`) can't be translated this way, so keep it to names and values.
 
 **Dependencies.** The platform (`router-api`, the Kotlin stdlib, coroutines and OkHttp) is `compileOnly`: the app
 provides it. Anything else you bundle must be under a license compatible with Apache-2.0 (Apache, MIT, BSD).
