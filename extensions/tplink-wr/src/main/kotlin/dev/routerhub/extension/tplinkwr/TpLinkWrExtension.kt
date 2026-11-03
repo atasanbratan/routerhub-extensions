@@ -38,6 +38,7 @@ internal class TpLinkWrFactory(private val model: WrModel) : RouterFirmwareFacto
         Capability.CONNECTED_CLIENTS,
         Capability.CLIENT_ACTIONS,
         Capability.REBOOT,
+        Capability.WIFI_TOGGLE,
         Capability.SETTINGS,
     )
 
@@ -83,6 +84,8 @@ internal class TpLinkWrFirmware(
     override suspend fun readSettings(pageId: String): SettingsPage = WrSettings.page(pageId).read(api)
 
     override suspend fun writeSettings(pageId: String, changes: Map<String, String>) = WrSettings.page(pageId).apply(api, changes)
+
+    override suspend fun setWifiEnabled(radioId: String?, enabled: Boolean) = WifiPage.setEnabled(api, enabled)
 
     override suspend fun reboot() {
         api.page("SysRebootRpm.htm", "Reboot=Reboot")

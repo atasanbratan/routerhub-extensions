@@ -19,7 +19,7 @@ internal interface WrPage {
 }
 
 internal object WrSettings {
-    val pages: List<WrPage> = listOf(ReservationsPage, PortForwardsPage, DmzPage, UpnpPage)
+    val pages: List<WrPage> = listOf(WifiPage, DhcpServerPage, ReservationsPage, PortForwardsPage, DmzPage, UpnpPage)
 
     fun page(id: String): WrPage = pages.firstOrNull { it.info.id == id } ?: throw InvalidSettingException("page", "Unknown page: $id")
 

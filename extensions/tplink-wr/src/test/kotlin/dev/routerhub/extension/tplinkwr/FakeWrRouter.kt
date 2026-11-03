@@ -24,6 +24,11 @@ internal class FakeWrRouter : WrApi {
     var dmz = listOf("0", "0.0.0.0")
     var upnp = true
 
+    /** The Wi-Fi pages' `wlanPara`, made-up values in the router's positions. */
+    val network = WifiFixtures.network()
+    val security = WifiFixtures.security()
+    val dhcp = mutableListOf("1", "192.168.0.100", "192.168.0.199", "120", "0.0.0.0", "", "0.0.0.0", "0.0.0.0", "0", "0", "1", "0")
+
     override suspend fun login() {
         requests += "login"
     }
@@ -76,6 +81,31 @@ internal class FakeWrRouter : WrApi {
                 if ("Upnpenable" in q) upnp = true
                 if ("Upnpdisable" in q) upnp = false
                 """<script>var uPnPPara = new Array(${if (upnp) 1 else 0}, 0, 6, 0,0 );</script>"""
+            }
+            "WlanNetworkRpm.htm" -> {
+                if ("Save" in q) {
+                    network[3] = decode(q.getValue("ssid1"))
+                    network[8] = if ("ap" in q) "1" else "0"
+                    network[9] = if ("broadcast" in q) "1" else "0"
+                    network[10] = q.getValue("channel")
+                }
+                WifiFixtures.networkPage(network)
+            }
+            "WlanSecurityRpm.htm" -> {
+                if ("Save" in q) {
+                    security[2] = q.getValue("secType")
+                    security[3] = security[3].take(2) + q.getValue("pskSecOpt")
+                    security[14] = q.getValue("pskCipher")
+                    security[9] = decode(q.getValue("pskSecret"))
+                }
+                WifiFixtures.securityPage(security)
+            }
+            "LanDhcpServerRpm.htm" -> {
+                if ("Save" in q && q.getValue("ip1").startsWith("10.")) return """<script>var errCode = "26106";</script>"""
+                if ("Save" in q) {
+                    listOf("dhcpserver", "ip1", "ip2", "Lease", "gateway", "domain", "dnsserver", "dnsserver2").forEachIndexed { i, name -> dhcp[i] = decode(q.getValue(name)) }
+                }
+                """<script>var DHCPPara = new Array(${dhcp.joinToString(", ") { if (it.toIntOrNull() != null) it else "\"$it\"" }}, 0,0 );</script>"""
             }
             "SysRebootRpm.htm" -> ""
             else -> pages[name] ?: error("No page $name")

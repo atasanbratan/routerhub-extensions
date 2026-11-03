@@ -31,7 +31,7 @@ class TpLinkWrFirmwareTest {
     @Test
     fun `every settings page can be read`() = runBlocking {
         val pages = firmware.listSettingsPages()
-        assertEquals(listOf("dhcp-reservations", "port-forwarding", "dmz", "upnp"), pages.map { it.id })
+        assertEquals(listOf("wifi", "dhcp-server", "dhcp-reservations", "port-forwarding", "dmz", "upnp"), pages.map { it.id })
         pages.forEach { assertEquals(it, firmware.readSettings(it.id).info) }
     }
 
@@ -40,7 +40,7 @@ class TpLinkWrFirmwareTest {
         val factory = TpLinkWrExtension().factories.single()
         assertEquals("tplink.wr.wr940n", factory.id)
         assertEquals(
-            setOf(Capability.STATUS, Capability.CONNECTED_CLIENTS, Capability.CLIENT_ACTIONS, Capability.REBOOT, Capability.SETTINGS),
+            setOf(Capability.STATUS, Capability.CONNECTED_CLIENTS, Capability.CLIENT_ACTIONS, Capability.REBOOT, Capability.WIFI_TOGGLE, Capability.SETTINGS),
             factory.capabilities,
         )
     }

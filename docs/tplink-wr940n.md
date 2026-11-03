@@ -19,15 +19,22 @@ added once someone has tried one: please open a router support request with what
   its name.
 - **Connected clients:** every device with a DHCP lease, marked wired or Wi-Fi from the router's Wi-Fi
   station list.
-- **Reboot.**
-- **Settings pages:** DHCP reservations, port forwarding (single ports and ranges), DMZ and UPnP.
+- **Reboot,** and the router screen's **Wi-Fi switch.**
+- **Settings pages:**
+  - **Wi-Fi:** on or off, name, hidden name, channel (only those the router's region allows), WPA2 or
+    WPA/WPA2 with AES, and a new password. It refuses to turn a protected network into an open one;
+    security the page doesn't offer, such as WEP, is shown as it is and kept.
+  - **DHCP server:** on or off, address range, lease time, gateway, domain and DNS servers. Read-only
+    while the router runs DHCP by itself.
+  - DHCP reservations, port forwarding (single ports and ranges), DMZ and UPnP.
 - **Block and allow from the clients list,** through the router's Wi-Fi MAC filter: the device loses this
   Wi-Fi, not just the internet. Only offered while the filter refuses the devices on its list; under the
   other rule, adding a device would let it in and switching the filter on would shut everyone else out.
   Allowing the last blocked device switches the filter off again.
 
-Wi-Fi name, password and channel, DHCP server settings, access control and time schedules are next.
-They were left out of this version because changing them on the test router would have cut off its users.
+The Wi-Fi and DHCP server pages were read on the test router; saving them was tried only against a
+simulation of its pages, since changing them on that router would cut off its users. Access control and
+time schedules are next.
 
 ## Things to know
 

@@ -12,7 +12,7 @@ which makes this a good place to start contributing.
 - **Ask for support** for a router you cannot write code for, with a
   [router support request](https://github.com/atasanbratan/routerhub-extensions/issues/new?template=router_support.yml).
 - **Translate.** Each extension keeps its translations in `src/main/resources/<package>/i18n/<language>.json`, mapping
-  the English text to the translated one. Spanish, Portuguese, Indonesian and Arabic exist and need native speakers
+  the English text to the translated one. Spanish, Portuguese, Indonesian, Russian and Arabic exist and need native speakers
   to review them; new languages are welcome.
 - **Improve the docs**, or help others in [Discussions](https://github.com/atasanbratan/routerhub-extensions/discussions).
 
