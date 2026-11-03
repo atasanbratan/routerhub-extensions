@@ -38,11 +38,19 @@ internal object UbusStatusReader {
             )
         }
 
-    /** LuCI's own call, which its ACLs always cover. `network.wireless status` answers alike but often isn't allowed. */
+    /**
+     * LuCI's own call, which its ACLs always cover. `network.wireless status` answers alike but often
+     * isn't allowed. A router without Wi-Fi has neither (OpenWrt 25.12 drops the object), and that is
+     * no reason to fail the whole status: it simply has no radios.
+     */
     private suspend fun wirelessDevices(router: UbusRouter): JsonObject = try {
         router.api.call("luci-rpc", "getWirelessDevices")
     } catch (_: CommandFailedException) {
-        router.api.call("network.wireless", "status")
+        try {
+            router.api.call("network.wireless", "status")
+        } catch (_: CommandFailedException) {
+            emptyMap()
+        }
     }
 
     /** `band` is the current option, `hwmode` the one older configs still have. */
@@ -117,10 +125,14 @@ internal object UbusStatusReader {
             .associate { (mac, value) -> mac.lowercase() to value.asObject("A host hint") }
         val neighbours = arp(router)?.filter { lanDevice.isEmpty() || it.device == lanDevice }?.associateBy { it.mac }
 
-        val blocked = BlockedDevicesPage.macs(router)
+        val blockedRows = BlockedDevicesPage.rows(router)
+        val blocked = blockedRows.map { it[1] }.toSet()
 
         val macs = stations.keys + (neighbours?.keys ?: leases.keys)
-        return macs.map { mac ->
+        val away = blockedRows.filter { it[1] !in macs }.map { (name, mac) ->
+            ConnectedClient(macAddress = mac, hostname = name.ifEmpty { null }, internetBlocked = true, online = false)
+        }
+        return away + macs.map { mac ->
             val lease = leases[mac]
             val hint = hints[mac]
             val neighbour = neighbours?.get(mac)

@@ -45,7 +45,7 @@ class TendaFirmwareTest {
         assertEquals(Protocol.WEB, factory.protocol)
         assertEquals(80, factory.defaultPort)
         assertEquals(
-            setOf(Capability.STATUS, Capability.CONNECTED_CLIENTS, Capability.REBOOT, Capability.WIFI_TOGGLE, Capability.SETTINGS),
+            setOf(Capability.STATUS, Capability.CONNECTED_CLIENTS, Capability.CLIENT_ACTIONS, Capability.REBOOT, Capability.WIFI_TOGGLE, Capability.SETTINGS),
             factory.capabilities,
         )
         assertEquals(listOf("tenda.ac.ac10v6"), TendaAcExtension().factories.map { it.id })

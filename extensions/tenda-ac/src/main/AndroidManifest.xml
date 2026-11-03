@@ -20,9 +20,9 @@
             android:name="dev.routerhub.extension.class"
             android:value=".TendaAcExtension" />
 
-        <!-- router-api version this APK needs (3 added editable list fields). -->
+        <!-- router-api version this APK needs (4 added client actions). -->
         <meta-data
             android:name="dev.routerhub.extension.api"
-            android:value="3" />
+            android:value="4" />
     </application>
 </manifest>

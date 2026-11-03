@@ -1,10 +1,12 @@
 package dev.routerhub.extension.tenda
 
 import dev.routerhub.api.Capability
+import dev.routerhub.api.ClientAction
 import dev.routerhub.api.ConnectedClient
 import dev.routerhub.api.ConnectionConfig
 import dev.routerhub.api.FirmwareParseException
 import dev.routerhub.api.InvalidSettingException
+import dev.routerhub.api.RouterException
 import dev.routerhub.api.RouterFirmware
 import dev.routerhub.api.RouterStatus
 import dev.routerhub.api.RouterUnreachableException
@@ -31,8 +33,20 @@ internal class TendaFirmware(
     override suspend fun getStatus(): RouterStatus =
         TendaStatus.parseStatus(system = http.read("GetSystemStatus"), router = http.read("GetRouterStatus"))
 
-    override suspend fun getConnectedClients(): List<ConnectedClient> =
-        TendaStatus.parseClients(http.read("getOnlineList"))
+    override suspend fun getConnectedClients(): List<ConnectedClient> {
+        val clients = TendaStatus.parseClients(http.read("getOnlineList"))
+        return try {
+            TendaClientActions.withBlocked(http, clients)
+        } catch (_: RouterException) {
+            // The block list only adds to the list; it isn't worth losing the clients over.
+            clients
+        }
+    }
+
+    override suspend fun clientActions(client: ConnectedClient): List<ClientAction> = TendaClientActions.offered(http, client)
+
+    override suspend fun runClientAction(client: ConnectedClient, actionId: String) =
+        TendaClientActions.run(http, client, actionId, TendaContext(config.username, password))
 
     override suspend fun reboot() {
         // The reboot is a plain form post, which the router answers with a redirect to its login page

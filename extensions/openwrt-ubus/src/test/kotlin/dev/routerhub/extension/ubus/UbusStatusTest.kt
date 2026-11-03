@@ -36,6 +36,15 @@ class UbusStatusTest {
     }
 
     @Test
+    fun `a router without Wi-Fi has no radios, and its status still loads`() = runBlocking {
+        rpcd.failing["luci-rpc getWirelessDevices"] = CommandFailedException("luci-rpc getWirelessDevices", null, "no")
+        rpcd.failing["network.wireless status"] = CommandFailedException("network.wireless status", null, "This router doesn't offer this call")
+        val status = UbusStatusReader.status(router(rpcd))
+        assertEquals(emptyList<Any>(), status.wifiRadios)
+        assertEquals("Example Router X1", status.model)
+    }
+
+    @Test
     fun `the WAN is whichever interface has the default route, like a Wi-Fi uplink`() = runBlocking {
         rpcd.answer(
             "network.interface dump",

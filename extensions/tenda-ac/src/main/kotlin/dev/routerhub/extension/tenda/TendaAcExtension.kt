@@ -31,6 +31,7 @@ internal class TendaAcFactory(private val model: TendaModel) : RouterFirmwareFac
     override val capabilities = setOf(
         Capability.STATUS,
         Capability.CONNECTED_CLIENTS,
+        Capability.CLIENT_ACTIONS,
         Capability.REBOOT,
         Capability.WIFI_TOGGLE,
         Capability.SETTINGS,

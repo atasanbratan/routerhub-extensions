@@ -8,10 +8,15 @@ hardware-specific code.
 
 | OpenWrt | State |
 | --- | --- |
-| 24.10 | Tested on a real router, including every settings page and saving changes |
-| Other versions | Not tested yet. Please report what happens on yours |
+| 25.12 | Tested in a virtual machine: status, every settings page, reservations, port forwarding, router name |
+| 24.10 | Tested on a real router (Xiaomi Mi Router 4C): everything, including Wi-Fi changes, blocking and reservations |
+| 23.05 | Tested in a virtual machine, like 25.12 |
+| 22.03 | Tested in a virtual machine, like 25.12 |
+| 21.02 | Tested in a virtual machine, like 25.12 |
+| 19.07 and older | Not supported: LuCI there has no `/ubus` address. Use the [SSH extension](openwrt-ssh.md) |
 
-Images without LuCI, and OpenWrt 18.06 and older, need the [SSH extension](openwrt-ssh.md).
+A virtual machine has no Wi-Fi, so the Wi-Fi pages were tested on the real router only. Images without LuCI need
+the [SSH extension](openwrt-ssh.md) too.
 
 Use it instead of the [SSH extension](openwrt-ssh.md) when you want the settings pages.
 

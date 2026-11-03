@@ -35,6 +35,16 @@ class ClientActionsTest {
     }
 
     @Test
+    fun `a blocked device that left stays listed, so it can be allowed again`() = runBlocking {
+        run(ClientActions.BLOCK)
+        val away = UbusStatusReader.clients(router).single { it.macAddress == client.macAddress }
+        assertEquals(false, away.online)
+        assertEquals(true, away.internetBlocked)
+        assertEquals("my-laptop", away.hostname)
+        assertEquals(listOf(ClientActions.ALLOW), ClientActions.offered(router, away).map { it.id })
+    }
+
+    @Test
     fun `blocking asks first`() = runBlocking {
         assertTrue(ClientActions.offered(router, client).first { it.id == ClientActions.BLOCK }.confirmation != null)
     }
