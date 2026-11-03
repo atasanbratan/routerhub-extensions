@@ -9,6 +9,7 @@ import dev.routerhub.api.DslStats
 import dev.routerhub.api.InvalidSettingException
 import dev.routerhub.api.RouterStatus
 import dev.routerhub.api.SettingField
+import dev.routerhub.api.SettingsGroup
 import dev.routerhub.api.SettingsPage
 import dev.routerhub.api.SettingsPageInfo
 import dev.routerhub.api.TableCodec
@@ -101,12 +102,12 @@ internal class DemoRouter {
     // --- settings pages -----------------------------------------------------------------------
 
     fun pages() = listOf(
-        SettingsPageInfo("wifi", "Wi-Fi", "Wireless", "Name, visibility and password"),
-        SettingsPageInfo("mac-filter", "MAC filter", "Wireless", "Allow or block specific devices on Wi-Fi"),
-        SettingsPageInfo("dhcp", "DHCP server", "Network", "Hands out addresses to the devices on your network"),
-        SettingsPageInfo("port-forwarding", "Port forwarding", "Network", "Send incoming traffic to a device on your network"),
-        SettingsPageInfo("log", "System log", "System", "Recent messages from the router"),
-        SettingsPageInfo("password", "Router password", "System", "The login the app uses for this router"),
+        SettingsPageInfo("wifi", "Wi-Fi", SettingsGroup.WIRELESS, "Name, visibility and password"),
+        SettingsPageInfo("mac-filter", "MAC filter", SettingsGroup.WIRELESS, "Allow or block specific devices on Wi-Fi"),
+        SettingsPageInfo("dhcp", "DHCP server", SettingsGroup.NETWORK, "Hands out addresses to the devices on your network"),
+        SettingsPageInfo("port-forwarding", "Port forwarding", SettingsGroup.NETWORK, "Send incoming traffic to a device on your network"),
+        SettingsPageInfo("log", "System log", SettingsGroup.SYSTEM, "Recent messages from the router"),
+        SettingsPageInfo("password", "Router password", SettingsGroup.SYSTEM, "The login the app uses for this router"),
     )
 
     @Synchronized

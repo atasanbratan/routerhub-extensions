@@ -4,6 +4,7 @@ import dev.routerhub.api.ChoiceOption
 import dev.routerhub.api.ColumnKind
 import dev.routerhub.api.InvalidSettingException
 import dev.routerhub.api.SettingField
+import dev.routerhub.api.SettingsGroup
 import dev.routerhub.api.SettingsPage
 import dev.routerhub.api.SettingsPageInfo
 import dev.routerhub.api.TableColumn
@@ -15,7 +16,7 @@ import java.time.format.DateTimeParseException
 // ---------------------------------------------------------------------------------------------
 
 internal object TimePage : TendaPage {
-    override val info = SettingsPageInfo("time", "Date and time", "System", "Clock and time zone")
+    override val info = SettingsPageInfo("time", "Date and time", SettingsGroup.SYSTEM, "Clock and time zone")
 
     const val MODE = "mode"
     const val ZONE = "zone"
@@ -135,7 +136,7 @@ internal object TimePage : TendaPage {
 // ---------------------------------------------------------------------------------------------
 
 internal object LedPage : TendaPage {
-    override val info = SettingsPageInfo("led", "LED", "System", "Switch the indicator lights off, for example at night")
+    override val info = SettingsPageInfo("led", "LED", SettingsGroup.SYSTEM, "Switch the indicator lights off, for example at night")
 
     const val MODE = "mode"
     const val WINDOW = "window"
@@ -178,7 +179,7 @@ internal object LedPage : TendaPage {
 // ---------------------------------------------------------------------------------------------
 
 internal object AutoRebootPage : TendaPage {
-    override val info = SettingsPageInfo("auto-reboot", "Scheduled reboot", "System", "Restart the router by itself at a fixed time")
+    override val info = SettingsPageInfo("auto-reboot", "Scheduled reboot", SettingsGroup.SYSTEM, "Restart the router by itself at a fixed time")
 
     const val ENABLE = "enable"
     const val TIME = "time"
@@ -216,7 +217,7 @@ internal object AutoRebootPage : TendaPage {
 // ---------------------------------------------------------------------------------------------
 
 internal object SystemLogPage : TendaPage {
-    override val info = SettingsPageInfo("log", "System log", "System", "Recent messages from the router")
+    override val info = SettingsPageInfo("log", "System log", SettingsGroup.SYSTEM, "Recent messages from the router")
 
     const val LOG = "log"
 
@@ -252,7 +253,7 @@ internal object SystemLogPage : TendaPage {
 // ---------------------------------------------------------------------------------------------
 
 internal object LoginPasswordPage : TendaPage {
-    override val info = SettingsPageInfo("login-password", "Login password", "System", "The password of this router's web page and of this app")
+    override val info = SettingsPageInfo("login-password", "Login password", SettingsGroup.SYSTEM, "The password of this router's web page and of this app")
 
     const val PASSWORD = "password"
 

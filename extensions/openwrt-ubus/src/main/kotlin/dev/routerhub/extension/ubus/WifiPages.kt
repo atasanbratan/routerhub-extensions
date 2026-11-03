@@ -4,12 +4,13 @@ import dev.routerhub.api.ChoiceOption
 import dev.routerhub.api.InvalidSettingException
 import dev.routerhub.api.RouterException
 import dev.routerhub.api.SettingField
+import dev.routerhub.api.SettingsGroup
 import dev.routerhub.api.SettingsPage
 import dev.routerhub.api.SettingsPageInfo
 import dev.routerhub.api.WifiBand
 
 private const val WIRELESS = "wireless"
-private const val GROUP = "Wireless"
+private const val GROUP = SettingsGroup.WIRELESS
 private const val WIFI_WARNING =
     "Applying restarts this radio. Wireless devices disconnect for a few seconds, " +
         "including this phone if it is connected over Wi-Fi. This change can't be rolled back automatically."

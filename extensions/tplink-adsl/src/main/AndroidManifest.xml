@@ -26,6 +26,6 @@
         <!-- router-api version this APK needs (3 added editable list fields). -->
         <meta-data
             android:name="dev.routerhub.extension.api"
-            android:value="3" />
+            android:value="5" />
     </application>
 </manifest>

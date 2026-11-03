@@ -4,6 +4,7 @@ import dev.routerhub.api.ChoiceOption
 import dev.routerhub.api.ColumnKind
 import dev.routerhub.api.InvalidSettingException
 import dev.routerhub.api.SettingField
+import dev.routerhub.api.SettingsGroup
 import dev.routerhub.api.SettingsPage
 import dev.routerhub.api.SettingsPageInfo
 import dev.routerhub.api.TableColumn
@@ -18,7 +19,7 @@ import dev.routerhub.api.TableColumn
  * list together is refused because the list on screen belongs to the old mode.
  */
 internal object MacFilterPage : TendaPage {
-    override val info = SettingsPageInfo("mac-filter", "MAC filter", "Network", "Allow or block devices by their MAC address")
+    override val info = SettingsPageInfo("mac-filter", "MAC filter", SettingsGroup.NETWORK, "Allow or block devices by their MAC address")
 
     const val MODE = "mode"
     const val DEVICES = "devices"

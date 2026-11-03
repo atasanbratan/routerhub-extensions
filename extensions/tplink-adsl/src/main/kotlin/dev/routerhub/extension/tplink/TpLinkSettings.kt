@@ -3,6 +3,7 @@ package dev.routerhub.extension.tplink
 import dev.routerhub.api.ChoiceOption
 import dev.routerhub.api.InvalidSettingException
 import dev.routerhub.api.SettingField
+import dev.routerhub.api.SettingsGroup
 import dev.routerhub.api.SettingsPage
 import dev.routerhub.api.SettingsPageInfo
 
@@ -40,7 +41,7 @@ internal object TpLinkSettings {
 // ---------------------------------------------------------------------------------------------
 
 internal object WirelessBasicPage : SettingsPageSpec {
-    override val info = SettingsPageInfo("wireless-basic", "Wi-Fi", "Wireless", "Name, visibility and client limit")
+    override val info = SettingsPageInfo("wireless-basic", "Wi-Fi", SettingsGroup.WIRELESS, "Name, visibility and client limit")
     override val path = "/wlcfg.html"
 
     const val ENABLE = "enable"
@@ -119,7 +120,7 @@ internal object WirelessBasicPage : SettingsPageSpec {
 // ---------------------------------------------------------------------------------------------
 
 internal object WirelessSecurityPage : SettingsPageSpec {
-    override val info = SettingsPageInfo("wireless-security", "Wi-Fi security", "Wireless", "Password and encryption")
+    override val info = SettingsPageInfo("wireless-security", "Wi-Fi security", SettingsGroup.WIRELESS, "Password and encryption")
     override val path = "/wlsecurity.html"
 
     /**
@@ -309,7 +310,7 @@ internal object WirelessSecurityPage : SettingsPageSpec {
 // ---------------------------------------------------------------------------------------------
 
 internal object WirelessGuestPage : SettingsPageSpec {
-    override val info = SettingsPageInfo("wireless-guest", "Guest network", "Wireless", "A separate network for visitors")
+    override val info = SettingsPageInfo("wireless-guest", "Guest network", SettingsGroup.WIRELESS, "A separate network for visitors")
     override val path = "/wlgstnwk.html"
 
     const val ENABLE = "enable"
@@ -425,7 +426,7 @@ internal object WirelessGuestPage : SettingsPageSpec {
  * waits until it can be checked against live saves.
  */
 internal object WirelessAdvancedPage : SettingsPageSpec {
-    override val info = SettingsPageInfo("wireless-advanced", "Advanced radio", "Wireless", "Channel, power and mode (view only)")
+    override val info = SettingsPageInfo("wireless-advanced", "Advanced radio", SettingsGroup.WIRELESS, "Channel, power and mode (view only)")
     override val path = "/wlcfgadv.html"
 
     override fun parse(html: String): SettingsPage {
@@ -475,7 +476,7 @@ internal object WirelessAdvancedPage : SettingsPageSpec {
 // ---------------------------------------------------------------------------------------------
 
 internal object DmzPage : SettingsPageSpec {
-    override val info = SettingsPageInfo("dmz", "DMZ host", "Network", "Forward unsolicited traffic to one device")
+    override val info = SettingsPageInfo("dmz", "DMZ host", SettingsGroup.NETWORK, "Forward unsolicited traffic to one device")
     override val path = "/scdmz.html"
 
     const val ADDRESS = "address"
@@ -510,7 +511,7 @@ internal object DmzPage : SettingsPageSpec {
 // ---------------------------------------------------------------------------------------------
 
 internal object UpnpPage : SettingsPageSpec {
-    override val info = SettingsPageInfo("upnp", "UPnP", "Network", "Let devices open ports automatically")
+    override val info = SettingsPageInfo("upnp", "UPnP", SettingsGroup.NETWORK, "Let devices open ports automatically")
     override val path = "/upnpcfg.html"
 
     const val ENABLE = "enable"
@@ -536,7 +537,7 @@ internal object UpnpPage : SettingsPageSpec {
 // ---------------------------------------------------------------------------------------------
 
 internal object AdminPasswordPage : SettingsPageSpec {
-    override val info = SettingsPageInfo("admin-password", "Router password", "System", "The password for this app and the web page")
+    override val info = SettingsPageInfo("admin-password", "Router password", SettingsGroup.SYSTEM, "The password for this app and the web page")
     override val path = "/password.html"
 
     const val PASSWORD = "password"

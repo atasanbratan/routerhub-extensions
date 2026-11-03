@@ -3,6 +3,7 @@ package dev.routerhub.extension.tenda
 import dev.routerhub.api.ChoiceOption
 import dev.routerhub.api.InvalidSettingException
 import dev.routerhub.api.SettingField
+import dev.routerhub.api.SettingsGroup
 import dev.routerhub.api.SettingsPage
 import dev.routerhub.api.SettingsPageInfo
 
@@ -11,7 +12,7 @@ import dev.routerhub.api.SettingsPageInfo
 // ---------------------------------------------------------------------------------------------
 
 internal object WifiPage : TendaPage {
-    override val info = SettingsPageInfo("wifi", "Wi-Fi", "Wireless", "Names, passwords and visibility of both bands")
+    override val info = SettingsPageInfo("wifi", "Wi-Fi", SettingsGroup.WIRELESS, "Names, passwords and visibility of both bands")
 
     const val RADIO_24 = "2g"
     const val RADIO_5 = "5g"
@@ -153,7 +154,7 @@ internal object WifiPage : TendaPage {
 // ---------------------------------------------------------------------------------------------
 
 internal object GuestWifiPage : TendaPage {
-    override val info = SettingsPageInfo("guest-wifi", "Guest network", "Wireless", "A separate network for visitors")
+    override val info = SettingsPageInfo("guest-wifi", "Guest network", SettingsGroup.WIRELESS, "A separate network for visitors")
 
     const val ENABLE = "enable"
     const val SSID_24 = "ssid24"
@@ -249,7 +250,7 @@ internal object GuestWifiPage : TendaPage {
 // ---------------------------------------------------------------------------------------------
 
 internal object WifiChannelPage : TendaPage {
-    override val info = SettingsPageInfo("wifi-channel", "Channel and mode", "Wireless", "Radio mode, channel width and channel")
+    override val info = SettingsPageInfo("wifi-channel", "Channel and mode", SettingsGroup.WIRELESS, "Radio mode, channel width and channel")
 
     const val MODE_24 = "mode24"
     const val WIDTH_24 = "width24"
@@ -361,7 +362,7 @@ internal object WifiChannelPage : TendaPage {
 // ---------------------------------------------------------------------------------------------
 
 internal object WifiExtrasPage : TendaPage {
-    override val info = SettingsPageInfo("wifi-extras", "Wi-Fi advanced", "Wireless", "Transmit power, WPS and beamforming")
+    override val info = SettingsPageInfo("wifi-extras", "Wi-Fi advanced", SettingsGroup.WIRELESS, "Transmit power, WPS and beamforming")
 
     const val POWER_24 = "power24"
     const val POWER_5 = "power5"

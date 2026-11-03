@@ -5,12 +5,13 @@ import dev.routerhub.api.CommandFailedException
 import dev.routerhub.api.RouterException
 import dev.routerhub.api.RouterSessionExpiredException
 import dev.routerhub.api.SettingField
+import dev.routerhub.api.SettingsGroup
 import dev.routerhub.api.SettingsPage
 import dev.routerhub.api.SettingsPageInfo
 import dev.routerhub.api.TableColumn
 
 private const val SYSTEM = "system"
-private const val GROUP = "System"
+private const val GROUP = SettingsGroup.SYSTEM
 
 internal object SystemPage : UbusPage {
     const val HOSTNAME = "hostname"

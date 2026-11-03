@@ -5,6 +5,7 @@ import dev.routerhub.api.ColumnKind
 import dev.routerhub.api.FirmwareParseException
 import dev.routerhub.api.InvalidSettingException
 import dev.routerhub.api.SettingField
+import dev.routerhub.api.SettingsGroup
 import dev.routerhub.api.SettingsPage
 import dev.routerhub.api.SettingsPageInfo
 import dev.routerhub.api.TableCodec
@@ -20,7 +21,7 @@ private fun scriptValue(html: String, name: String): String? =
 // ---------------------------------------------------------------------------------------------
 
 internal object SystemLogPage : SettingsPageSpec {
-    override val info = SettingsPageInfo("system-log", "System log", "System", "Recent messages from the router")
+    override val info = SettingsPageInfo("system-log", "System log", SettingsGroup.SYSTEM, "Recent messages from the router")
     override val path = "/logview.cmd"
 
     private const val SHOWN = 300
@@ -59,7 +60,7 @@ internal object SystemLogPage : SettingsPageSpec {
 // ---------------------------------------------------------------------------------------------
 
 internal object LogSettingsPage : SettingsPageSpec {
-    override val info = SettingsPageInfo("log-settings", "Log settings", "System", "What the router records, and where it sends it")
+    override val info = SettingsPageInfo("log-settings", "Log settings", SettingsGroup.SYSTEM, "What the router records, and where it sends it")
     override val path = "/logconfig.html"
 
     const val STATUS = "status"
@@ -137,7 +138,7 @@ internal object LogSettingsPage : SettingsPageSpec {
 // ---------------------------------------------------------------------------------------------
 
 internal object DynamicDnsPage : SettingsPageSpec {
-    override val info = SettingsPageInfo("dynamic-dns", "Dynamic DNS", "Network", "A fixed hostname for a changing address")
+    override val info = SettingsPageInfo("dynamic-dns", "Dynamic DNS", SettingsGroup.NETWORK, "A fixed hostname for a changing address")
     override val path = "/ddnsmngr.cmd"
     private const val ADD_PATH = "/ddnsadd.html"
 
@@ -248,7 +249,7 @@ internal object DynamicDnsPage : SettingsPageSpec {
 // ---------------------------------------------------------------------------------------------
 
 internal object SnmpPage : SettingsPageSpec {
-    override val info = SettingsPageInfo("snmp", "SNMP", "System", "Lets a management tool read the router's statistics")
+    override val info = SettingsPageInfo("snmp", "SNMP", SettingsGroup.SYSTEM, "Lets a management tool read the router's statistics")
     override val path = "/snmpconfig.html"
 
     const val ENABLE = "enable"
@@ -351,7 +352,7 @@ internal object SnmpPage : SettingsPageSpec {
  * non-secret parts are read.
  */
 internal object Tr069Page : SettingsPageSpec {
-    override val info = SettingsPageInfo("tr069", "TR-069", "System", "Management by your provider (view only)")
+    override val info = SettingsPageInfo("tr069", "TR-069", SettingsGroup.SYSTEM, "Management by your provider (view only)")
     override val path = "/tr69cfg.html"
 
     override fun parse(html: String): SettingsPage {
@@ -384,7 +385,7 @@ internal object Tr069Page : SettingsPageSpec {
  * pattern or an unset clock could switch the radio off for good, enabling is refused in both cases.
  */
 internal object WifiSchedulePage : SettingsPageSpec {
-    override val info = SettingsPageInfo("wireless-schedule", "Wi-Fi schedule", "Wireless", "Switch the radio on a timetable")
+    override val info = SettingsPageInfo("wireless-schedule", "Wi-Fi schedule", SettingsGroup.WIRELESS, "Switch the radio on a timetable")
     override val path = "/wlschedule.html"
 
     const val ENABLE = "enable"

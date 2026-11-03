@@ -4,6 +4,7 @@ import dev.routerhub.api.ChoiceOption
 import dev.routerhub.api.ColumnKind
 import dev.routerhub.api.InvalidSettingException
 import dev.routerhub.api.SettingField
+import dev.routerhub.api.SettingsGroup
 import dev.routerhub.api.SettingsPage
 import dev.routerhub.api.SettingsPageInfo
 import dev.routerhub.api.TableCodec
@@ -12,8 +13,8 @@ import dev.routerhub.api.TableColumn
 private const val NETWORK = "network"
 private const val DHCP = "dhcp"
 private const val FIREWALL = "firewall"
-private const val GROUP = "Network"
-private const val SECURITY_GROUP = "Firewall"
+private const val GROUP = SettingsGroup.NETWORK
+private const val SECURITY_GROUP = SettingsGroup.FIREWALL
 
 /**
  * The router's address stays read-only: after changing it the phone would have to confirm the change

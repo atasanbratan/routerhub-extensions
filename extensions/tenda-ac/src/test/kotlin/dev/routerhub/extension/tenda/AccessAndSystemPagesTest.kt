@@ -1,6 +1,7 @@
 package dev.routerhub.extension.tenda
 
 import dev.routerhub.api.SettingField
+import dev.routerhub.api.SettingsGroup
 import dev.routerhub.api.TableCodec
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -286,6 +287,6 @@ class AccessAndSystemPagesTest {
 
     @Test
     fun `pages are grouped under a few titles`() {
-        assertEquals(setOf("Wireless", "Network", "System"), TendaSettings.pages.map { it.info.group }.toSet())
+        assertEquals(setOf(SettingsGroup.WIRELESS, SettingsGroup.NETWORK, SettingsGroup.SYSTEM), TendaSettings.pages.map { it.info.group }.toSet())
     }
 }

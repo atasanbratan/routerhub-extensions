@@ -5,6 +5,7 @@ import dev.routerhub.api.ColumnKind
 import dev.routerhub.api.FirmwareParseException
 import dev.routerhub.api.InvalidSettingException
 import dev.routerhub.api.SettingField
+import dev.routerhub.api.SettingsGroup
 import dev.routerhub.api.SettingsPage
 import dev.routerhub.api.SettingsPageInfo
 import dev.routerhub.api.TableCodec
@@ -45,7 +46,7 @@ internal object ListRules {
 // ---------------------------------------------------------------------------------------------
 
 internal object PortForwardingPage : SettingsPageSpec {
-    override val info = SettingsPageInfo("port-forwarding", "Port forwarding", "Network", "Send incoming traffic to a device on your network")
+    override val info = SettingsPageInfo("port-forwarding", "Port forwarding", SettingsGroup.NETWORK, "Send incoming traffic to a device on your network")
     override val path = "/scvrtsrv.cmd?action=view"
     private const val ADD_PATH = "/scvrtsrv.html"
 
@@ -176,7 +177,7 @@ internal object PortForwardingPage : SettingsPageSpec {
 // ---------------------------------------------------------------------------------------------
 
 internal object WirelessMacFilterPage : SettingsPageSpec {
-    override val info = SettingsPageInfo("wireless-mac-filter", "MAC filter", "Wireless", "Allow or block specific devices on Wi-Fi")
+    override val info = SettingsPageInfo("wireless-mac-filter", "MAC filter", SettingsGroup.WIRELESS, "Allow or block specific devices on Wi-Fi")
     override val path = "/wlmacflt.cmd?action=view"
     private const val ADD_PATH = "/wlmacflt.html"
 
@@ -256,7 +257,7 @@ internal object WirelessMacFilterPage : SettingsPageSpec {
 // ---------------------------------------------------------------------------------------------
 
 internal object UrlFilterPage : SettingsPageSpec {
-    override val info = SettingsPageInfo("url-filter", "Website filter", "Network", "Block or allow websites for chosen devices")
+    override val info = SettingsPageInfo("url-filter", "Website filter", SettingsGroup.NETWORK, "Block or allow websites for chosen devices")
     override val path = "/urlfilter.cmd?action=view"
     private const val ADD_URL_PATH = "/url_add.html"
 
@@ -372,7 +373,7 @@ internal object UrlFilterPage : SettingsPageSpec {
 // ---------------------------------------------------------------------------------------------
 
 internal object StaticRoutesPage : SettingsPageSpec {
-    override val info = SettingsPageInfo("static-routes", "Static routes", "Network", "Send traffic for a network through a chosen gateway")
+    override val info = SettingsPageInfo("static-routes", "Static routes", SettingsGroup.NETWORK, "Send traffic for a network through a chosen gateway")
     override val path = "/rtroutecfg.cmd?action=viewcfg"
     private const val ADD_PATH = "/routeadd.html"
 
@@ -485,7 +486,7 @@ internal object StaticRoutesPage : SettingsPageSpec {
 // ---------------------------------------------------------------------------------------------
 
 internal object DhcpReservationsPage : SettingsPageSpec {
-    override val info = SettingsPageInfo("dhcp-reservations", "DHCP reservations", "Network", "Always give a device the same address")
+    override val info = SettingsPageInfo("dhcp-reservations", "DHCP reservations", SettingsGroup.NETWORK, "Always give a device the same address")
     override val path = "/lancfg2.html"
     private const val ADD_PATH = "/StaticIpAdd.html"
 
@@ -577,7 +578,7 @@ internal object DhcpReservationsPage : SettingsPageSpec {
  * changing it forces a new login.
  */
 internal object DhcpPage : SettingsPageSpec {
-    override val info = SettingsPageInfo("dhcp", "DHCP server", "Network", "Hands out addresses to the devices on your network")
+    override val info = SettingsPageInfo("dhcp", "DHCP server", SettingsGroup.NETWORK, "Hands out addresses to the devices on your network")
     override val path = "/lancfg2.html"
 
     const val MODE = "mode"

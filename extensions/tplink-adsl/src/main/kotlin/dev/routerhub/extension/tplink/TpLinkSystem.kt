@@ -4,6 +4,7 @@ import dev.routerhub.api.ChoiceOption
 import dev.routerhub.api.FirmwareParseException
 import dev.routerhub.api.InvalidSettingException
 import dev.routerhub.api.SettingField
+import dev.routerhub.api.SettingsGroup
 import dev.routerhub.api.SettingsPage
 import dev.routerhub.api.SettingsPageInfo
 
@@ -17,7 +18,7 @@ import dev.routerhub.api.SettingsPageInfo
  * much to SHOW what is exposed as to change it.
  */
 internal object RemoteAccessPage : SettingsPageSpec {
-    override val info = SettingsPageInfo("remote-access", "Remote access", "System", "What the WAN side of the router can reach")
+    override val info = SettingsPageInfo("remote-access", "Remote access", SettingsGroup.SYSTEM, "What the WAN side of the router can reach")
     override val path = "/remote.cmd?action=view"
 
     /** `['eth0','111','00']`: interface, access bits (web, telnet, ping), "blocked by a port forward" bits. */
@@ -129,7 +130,7 @@ internal object RemoteAccessPage : SettingsPageSpec {
  * either is in use here the page is shown read-only instead of being resent half-understood.
  */
 internal object TimePage : SettingsPageSpec {
-    override val info = SettingsPageInfo("time", "Date and time", "System", "NTP servers and time zone")
+    override val info = SettingsPageInfo("time", "Date and time", SettingsGroup.SYSTEM, "NTP servers and time zone")
     override val path = "/sntpcfg.html"
 
     const val NTP = "ntp"

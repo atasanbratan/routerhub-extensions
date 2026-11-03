@@ -4,6 +4,7 @@ import dev.routerhub.api.ChoiceOption
 import dev.routerhub.api.ColumnKind
 import dev.routerhub.api.InvalidSettingException
 import dev.routerhub.api.SettingField
+import dev.routerhub.api.SettingsGroup
 import dev.routerhub.api.SettingsPage
 import dev.routerhub.api.SettingsPageInfo
 import dev.routerhub.api.TableCodec
@@ -23,7 +24,7 @@ internal fun decodeRows(key: String, encoded: String, columns: Int): List<List<S
 // ---------------------------------------------------------------------------------------------
 
 internal object LanPage : TendaPage {
-    override val info = SettingsPageInfo("lan", "LAN and DHCP", "Network", "Router address and the DHCP server")
+    override val info = SettingsPageInfo("lan", "LAN and DHCP", SettingsGroup.NETWORK, "Router address and the DHCP server")
 
     const val LAN_IP = "lanIp"
     const val MASK = "mask"
@@ -142,7 +143,7 @@ internal object LanPage : TendaPage {
 // ---------------------------------------------------------------------------------------------
 
 internal object DhcpReservationsPage : TendaPage {
-    override val info = SettingsPageInfo("dhcp-reservations", "DHCP reservations", "Network", "Always give a device the same address")
+    override val info = SettingsPageInfo("dhcp-reservations", "DHCP reservations", SettingsGroup.NETWORK, "Always give a device the same address")
 
     const val RESERVATIONS = "reservations"
     private const val MAX_ROWS = 32
@@ -210,7 +211,7 @@ internal object DhcpReservationsPage : TendaPage {
 // ---------------------------------------------------------------------------------------------
 
 internal object PortForwardingPage : TendaPage {
-    override val info = SettingsPageInfo("port-forwarding", "Port forwarding", "Network", "Send incoming traffic to a device on your network")
+    override val info = SettingsPageInfo("port-forwarding", "Port forwarding", SettingsGroup.NETWORK, "Send incoming traffic to a device on your network")
 
     const val RULES = "rules"
     private const val MAX_RULES = 16
@@ -281,7 +282,7 @@ internal object PortForwardingPage : TendaPage {
 // ---------------------------------------------------------------------------------------------
 
 internal object DmzPage : TendaPage {
-    override val info = SettingsPageInfo("dmz", "DMZ host", "Network", "Expose one device to the internet")
+    override val info = SettingsPageInfo("dmz", "DMZ host", SettingsGroup.NETWORK, "Expose one device to the internet")
 
     const val ENABLE = "enable"
     const val IP = "ip"
@@ -315,7 +316,7 @@ internal object DmzPage : TendaPage {
 // ---------------------------------------------------------------------------------------------
 
 internal object UpnpPage : TendaPage {
-    override val info = SettingsPageInfo("upnp", "UPnP", "Network", "Let devices open ports by themselves")
+    override val info = SettingsPageInfo("upnp", "UPnP", SettingsGroup.NETWORK, "Let devices open ports by themselves")
 
     const val ENABLE = "enable"
 
@@ -341,7 +342,7 @@ internal object UpnpPage : TendaPage {
 // ---------------------------------------------------------------------------------------------
 
 internal object FirewallPage : TendaPage {
-    override val info = SettingsPageInfo("firewall", "Firewall", "Network", "Flood protection and ping from the internet")
+    override val info = SettingsPageInfo("firewall", "Firewall", SettingsGroup.NETWORK, "Flood protection and ping from the internet")
 
     const val ICMP = "icmp"
     const val TCP = "tcp"
@@ -382,7 +383,7 @@ internal object FirewallPage : TendaPage {
 // ---------------------------------------------------------------------------------------------
 
 internal object DdnsPage : TendaPage {
-    override val info = SettingsPageInfo("ddns", "Dynamic DNS", "Network", "A fixed name for a changing internet address")
+    override val info = SettingsPageInfo("ddns", "Dynamic DNS", SettingsGroup.NETWORK, "A fixed name for a changing internet address")
 
     const val ENABLE = "enable"
     const val PROVIDER = "provider"
@@ -444,7 +445,7 @@ internal object DdnsPage : TendaPage {
 // ---------------------------------------------------------------------------------------------
 
 internal object RemoteWebPage : TendaPage {
-    override val info = SettingsPageInfo("remote-web", "Remote management", "Network", "Open the router's web page from the internet")
+    override val info = SettingsPageInfo("remote-web", "Remote management", SettingsGroup.NETWORK, "Open the router's web page from the internet")
 
     const val ENABLE = "enable"
     const val IP = "ip"
