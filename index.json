@@ -13,6 +13,16 @@
       "sha256": "5e81279d66788f89dba1d6a24c1c5c078c18a5794ceaacdc19c1f922c7461e98"
     },
     {
+      "name": "OpenWrt (LuCI)",
+      "packageName": "dev.routerhub.extension.ubus",
+      "versionCode": 1,
+      "versionName": "1.0.0",
+      "apiVersion": 5,
+      "apk": "apk/dev.routerhub.extension.ubus-v1.0.0.apk",
+      "size": 230426,
+      "sha256": "b3d90014b359eb0958b42a7293045919910000612de72e9feaab094ea2c00219"
+    },
+    {
       "name": "OpenWrt (SSH)",
       "packageName": "dev.routerhub.extension.openwrt",
       "versionCode": 1,
