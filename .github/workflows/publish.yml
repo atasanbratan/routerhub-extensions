@@ -136,3 +136,10 @@ jobs:
           git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
             commit -m "Publish from ${GITHUB_SHA::7}"
           git push origin repo
+      - name: Refresh the jsDelivr copy of the index
+        # The app reads the index from jsDelivr where raw.githubusercontent.com is blocked, and jsDelivr
+        # keeps a branch's files for up to 12 hours. The APKs need no purge: each version has its own name.
+        run: |
+          for file in index.min.json index.json; do
+            curl -fsS --retry 3 "https://purge.jsdelivr.net/gh/${GITHUB_REPOSITORY}@repo/${file}" || echo "Purge of ${file} failed; jsDelivr refreshes it within 12 hours."
+          done
